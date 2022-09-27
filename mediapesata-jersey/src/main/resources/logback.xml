@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmmss"/>
+    
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d %gray(%highlight(%-5level %logger{15})) - %msg %n</pattern>
+            <!--<pattern>%d %-5p %logger{15} - %msg%n</pattern>-->
+        </encoder>
+    </appender>
+
+    <!--<appender name="file" class="ch.qos.logback.core.FileAppender">-->
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${user.home}/Temp/logRestMediaPesata-%d{yyyy-MM-dd}.txt</fileNamePattern>
+        </rollingPolicy>
+        <append>true</append>
+        <encoder>
+            <!--<pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>-->
+            <pattern>%d %-5p %logger{15} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="file" />
+    </appender>
+    
+    <root level="INFO">
+        <appender-ref ref="stdout"/>
+        <!--<appender-ref ref="file"/>-->
+    </root>
+            
+    <!-- ALTRE -->
+    <logger name="it.unibas.mediapesata" level="DEBUG"/>
+    <logger name="it.unibas.mediapesata.filtri.LoggerFilter" level="TRACE"/>
+
+    <!-- EXT LIBRARIES  -->
+    <!--<logger name="" level="ERROR"/>-->  
+</configuration>

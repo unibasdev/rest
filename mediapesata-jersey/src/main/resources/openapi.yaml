@@ -1,0 +1,18 @@
+prettyPrint: true
+cacheTTL: 0
+openAPI:
+    info:
+      version: '1.0'
+      title: MediaPesata RESTEasy
+      description: 'Applicazione sviluppata nel Corso di Laurea di 
+          Scienze e Tecnologie Informatiche dell''Universita'' degli Studi della Basilicata'
+      termsOfService: http://swagger.io/terms/
+    servers:
+      - url: http://localhost:8080/mediapesata-jersey
+        description: Server Locale su Tomcat
+    components:
+        securitySchemes:
+          bearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT

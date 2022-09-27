@@ -1,0 +1,207 @@
+import groovy.sql.Sql 
+
+plugins {
+    id 'java'
+}
+
+configurations {
+    jdbcdriver
+}
+
+dependencies {
+    jdbcdriver "org.postgresql:postgresql:42.2.1"
+    implementation "org.postgresql:postgresql:42.2.1"
+    implementation "org.hibernate:hibernate-core:5.6.11.Final"
+    implementation "org.hibernate:hibernate-validator:7.0.5.Final"
+    implementation "javax.validation:validation-api:2.0.1.Final"
+    runtimeOnly "jakarta.xml.bind:jakarta.xml.bind-api:2.3.3"
+    runtimeOnly "com.sun.xml.bind:jaxb-ri:2.3.3"
+}
+
+task jdbcClassLoader(){
+    doLast {
+        println "Execute jdbcClassLoader..."
+        configurations.jdbcdriver.files.each {
+            Sql.classLoader.addURL(it.toURI().toURL())
+        }
+        /*URLClassLoader loader = Sql.class.classLoader
+        project.buildscript.configurations.classpath.each { File file ->
+            loader.addURL(file.toURL())
+        }*/
+    }
+}
+
+task connectToDb(dependsOn: [jdbcClassLoader]){
+    doLast {
+        println "Execute connectToDb..."
+        
+        def sql = Sql.newInstance('jdbc:postgresql://' + project.dbhost + ':' + project.dbport + '/' + project.dbname,
+            project.dbusername, project.dbpassword, project.dbDriver)
+        project.ext.set("sql", sql)
+    }
+}
+
+task closeDb(){
+    doLast {
+        println "Execute closeDb..."
+        project.sql.close()
+    }
+}
+
+task connectToDbTmp(dependsOn: [jdbcClassLoader]){
+    doLast {
+        println "Execute connectToDbTmp..."
+        def sql = Sql.newInstance('jdbc:postgresql://' + project.dbhost + ':' + project.dbport + '/' + project.dbtmpDb,
+            project.dbusername, project.dbpassword, project.dbDriver)
+        project.ext.set("tmpSql", sql)
+    }
+}
+
+task closeDbTmp(){
+    doLast {
+        println "Execute closeDbTmp..."
+        project.tmpSql.close()
+    }
+}
+
+task createDb(dependsOn: connectToDbTmp){
+    group = "Hibernate"
+    description = "Crea il database per il progetto"
+    doLast {
+        println "Execute createDb..."
+        project.tmpSql.execute "create database " + project.dbname
+    }
+}
+createDb.finalizedBy(closeDbTmp)
+
+task createTable(dependsOn: [connectToDb]){
+    doLast {
+        println "Execute createTable..."
+        executeSqlFile("$rootDir/src/main/resources/database/schema.sql")
+    }
+}
+createTable.finalizedBy(closeDb)
+
+task insert(dependsOn: connectToDb){
+    doLast {
+        println "Execute insertFirstData..."
+        executeSqlFile("$rootDir/src/main/resources/database/insert.sql")
+    }
+}
+insert.finalizedBy(closeDb)
+
+task insertFile(dependsOn: connectToDb){
+    doLast {
+        println "Execute insertFirstData..."
+        executeSqlFile("$rootDir/src/main/resources/database/" + project.getProperty('filename'))
+    }
+}
+insertFile.finalizedBy(closeDb)
+
+task insertData(dependsOn: connectToDb){
+    doLast {
+        println "Execute insertData..."
+        if(new File("$rootDir/src/main/resources/database/insert.sql").exists()){
+            executeSqlFile("$rootDir/src/main/resources/database/insert.sql")
+        }
+        fileTree("$rootDir/src/main/resources/database/").visit { FileVisitDetails details ->
+            if (details.file.name.startsWith('insert-') && details.file.name.endsWith('sql')) {
+                executeSqlFile(details.file.path)
+            }
+        }
+    }
+}
+insertData.finalizedBy(closeDb)
+
+task deleteDb(dependsOn: connectToDbTmp){
+    group = "Hibernate"
+    description = "Cancella il database del progetto"
+    doLast {
+        println "Execute deleteDb..."
+        project.tmpSql.execute "drop database if exists " + project.dbname
+    }
+}
+deleteDb.finalizedBy(closeDbTmp)
+
+
+task schemaExport(dependsOn: build) {
+    group = "Hibernate"
+    description = "Genera il file sql con lo schema delle tabelle"
+    
+    dependsOn compileJava
+    doLast {
+        URL[] urls = sourceSets.main.runtimeClasspath.files.collect { it.toURI().toURL() } as URL[]
+        def classloader = new java.net.URLClassLoader(urls)
+        def bootstrapServiceRegistry = classloader.loadClass('org.hibernate.boot.registry.BootstrapServiceRegistryBuilder').newInstance().applyClassLoader(classloader).build();
+        def builder = classloader.loadClass("org.hibernate.boot.registry.StandardServiceRegistryBuilder").getConstructor(classloader.loadClass('org.hibernate.boot.registry.BootstrapServiceRegistry')).newInstance(bootstrapServiceRegistry);
+        builder.configure("hibernate.cfg.xml");
+        def serviceRegistry = builder.build();
+        def metadata = classloader.loadClass('org.hibernate.boot.MetadataSources').getConstructor(classloader.loadClass('org.hibernate.service.ServiceRegistry')).newInstance(serviceRegistry).buildMetadata();
+        def schemaExport = classloader.loadClass('org.hibernate.tool.hbm2ddl.SchemaExport').newInstance();
+        schemaExport.setFormat(true);
+        schemaExport.setHaltOnError(true);
+        schemaExport.setDelimiter(";");
+        def schemaOutputFile = new File("$rootDir/src/main/resources/database/schema.sql");
+        if (schemaOutputFile.exists()) {
+            schemaOutputFile.delete();
+        }
+        println(schemaOutputFile)
+        schemaExport.setOutputFile(schemaOutputFile.toString());
+        schemaExport.createOnly(EnumSet.of(Enum.valueOf(classloader.loadClass('org.hibernate.tool.schema.TargetType'), 'SCRIPT')), metadata);
+        metadata.buildSessionFactory().close();
+        if(!schemaExport.getExceptions().isEmpty()){
+            throw new GradleException('Error during schema export: ' + schemaExport.getExceptions())
+        }
+        def fileContents = schemaOutputFile.getText('UTF-8');
+        fileContents = fileContents.replace("insert into hibernate_sequences(sequence_name, next_val) values ('default',0);\n", '');
+        fileContents = fileContents.replace("\n\n", '\n');
+        schemaOutputFile.write(fileContents);
+    }
+}
+
+task schemaExportDelta(dependsOn: build) {
+    group = "Hibernate"
+    description = "Genera il file sql con il delta dello schema rispetto al database attualmente in uso"
+    
+    dependsOn compileJava
+    doLast {
+        URL[] urls = sourceSets.main.runtimeClasspath.files.collect { it.toURI().toURL() } as URL[]
+        def classloader = new java.net.URLClassLoader(urls)
+        def bootstrapServiceRegistry = classloader.loadClass('org.hibernate.boot.registry.BootstrapServiceRegistryBuilder').newInstance().applyClassLoader(classloader).build();
+        def builder = classloader.loadClass("org.hibernate.boot.registry.StandardServiceRegistryBuilder").getConstructor(classloader.loadClass('org.hibernate.boot.registry.BootstrapServiceRegistry')).newInstance(bootstrapServiceRegistry);
+        builder.configure("hibernate.cfg.xml");
+        def serviceRegistry = builder.build();
+        def metadata = classloader.loadClass('org.hibernate.boot.MetadataSources').getConstructor(classloader.loadClass('org.hibernate.service.ServiceRegistry')).newInstance(serviceRegistry).buildMetadata();
+        def schemaUpdate = classloader.loadClass('org.hibernate.tool.hbm2ddl.SchemaUpdate').newInstance();
+        schemaUpdate.setFormat(true);
+        schemaUpdate.setHaltOnError(true);
+        schemaUpdate.setDelimiter(";");
+        def schemaOutputFile = new File("$rootDir/src/main/resources/database/schema-delta.sql");
+        if (schemaOutputFile.exists()) {
+            schemaOutputFile.delete();
+        }
+        println(schemaOutputFile)
+        schemaUpdate.setOutputFile(schemaOutputFile.toString());
+        schemaUpdate.execute(EnumSet.of(Enum.valueOf(classloader.loadClass('org.hibernate.tool.schema.TargetType'), 'SCRIPT')), metadata);
+        metadata.buildSessionFactory().close();
+    }
+}
+
+task recreateDb(dependsOn: [schemaExport, deleteDb, createDb, createTable, insertData]){
+    group = "Hibernate"
+    description = "Cancella, crea e popola il database del progetto"
+    doLast {
+        println "Execute recreateDb..."
+    }
+}
+insertData.mustRunAfter(createTable)
+createTable.mustRunAfter(createDb)
+createDb.mustRunAfter(deleteDb)
+recreateDb.mustRunAfter(schemaExport)
+schemaExport.mustRunAfter(createDb)
+
+ext.executeSqlFile = { filePath ->
+    println "Execute executeSqlFile: " + filePath
+    String sqlFile = new File(filePath).text
+    project.sql.execute sqlFile
+}
