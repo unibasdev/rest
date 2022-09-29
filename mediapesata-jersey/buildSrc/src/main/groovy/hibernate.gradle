@@ -14,7 +14,7 @@ dependencies {
     implementation "org.hibernate:hibernate-core:5.6.11.Final"
     implementation "org.hibernate:hibernate-validator:7.0.5.Final"
     implementation "javax.validation:validation-api:2.0.1.Final"
-    implementation files('lib/it.unibas.hibernate-utils.jar')
+    implementation files('buildSrc/lib/it.unibas.hibernate-utils.jar')
     runtimeOnly "jakarta.xml.bind:jakarta.xml.bind-api:2.3.3"
     runtimeOnly "com.sun.xml.bind:jaxb-ri:2.3.3"
 }
@@ -131,8 +131,29 @@ task schemaExport(type: JavaExec) {
     mainClass = 'it.unibas.hibernate.utils.GenerateSchema'
 }
 
+task recreateDb(dependsOn: [schemaExport, deleteDb, createDb, createTable, insertData]){
+    group = "Hibernate"
+    description = "Cancella, crea e popola il database del progetto"
+    doLast {
+        println "Execute recreateDb..."
+    }
+}
+
+insertData.mustRunAfter(createTable)
+createTable.mustRunAfter(createDb)
+createDb.mustRunAfter(deleteDb)
+recreateDb.mustRunAfter(schemaExport)
+schemaExport.mustRunAfter(createDb)
+
+ext.executeSqlFile = { filePath ->
+    println "Execute executeSqlFile: " + filePath
+    String sqlFile = new File(filePath).text
+    project.sql.execute sqlFile
+}
+
 //Solo per JDK 1.8
-task schemaExportReflection(dependsOn: build) {
+/*
+task schemaExport(dependsOn: build) {
     group = "Hibernate"
     description = "Genera il file sql con lo schema delle tabelle"
     
@@ -165,24 +186,4 @@ task schemaExportReflection(dependsOn: build) {
         fileContents = fileContents.replace("\n\n", '\n');
         schemaOutputFile.write(fileContents);
     }
-}
-
-task recreateDb(dependsOn: [schemaExport, deleteDb, createDb, createTable, insertData]){
-    group = "Hibernate"
-    description = "Cancella, crea e popola il database del progetto"
-    doLast {
-        println "Execute recreateDb..."
-    }
-}
-
-insertData.mustRunAfter(createTable)
-createTable.mustRunAfter(createDb)
-createDb.mustRunAfter(deleteDb)
-recreateDb.mustRunAfter(schemaExport)
-schemaExport.mustRunAfter(createDb)
-
-ext.executeSqlFile = { filePath ->
-    println "Execute executeSqlFile: " + filePath
-    String sqlFile = new File(filePath).text
-    project.sql.execute sqlFile
-}
+}*/
