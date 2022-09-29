@@ -14,6 +14,7 @@ dependencies {
     implementation "org.hibernate:hibernate-core:5.6.11.Final"
     implementation "org.hibernate:hibernate-validator:7.0.5.Final"
     implementation "javax.validation:validation-api:2.0.1.Final"
+    implementation files('lib/it.unibas.hibernate-utils.jar')
     runtimeOnly "jakarta.xml.bind:jakarta.xml.bind-api:2.3.3"
     runtimeOnly "com.sun.xml.bind:jaxb-ri:2.3.3"
 }
@@ -123,8 +124,15 @@ task deleteDb(dependsOn: connectToDbTmp){
 }
 deleteDb.finalizedBy(closeDbTmp)
 
+task schemaExport(type: JavaExec) {
+    group = "Hibernate"
+    description = "Genera il file sql con lo schema delle tabelle"
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'it.unibas.hibernate.utils.GenerateSchema'
+}
 
-task schemaExport(dependsOn: build) {
+//Solo per JDK 1.8
+task schemaExportReflection(dependsOn: build) {
     group = "Hibernate"
     description = "Genera il file sql con lo schema delle tabelle"
     
@@ -159,34 +167,6 @@ task schemaExport(dependsOn: build) {
     }
 }
 
-task schemaExportDelta(dependsOn: build) {
-    group = "Hibernate"
-    description = "Genera il file sql con il delta dello schema rispetto al database attualmente in uso"
-    
-    dependsOn compileJava
-    doLast {
-        URL[] urls = sourceSets.main.runtimeClasspath.files.collect { it.toURI().toURL() } as URL[]
-        def classloader = new java.net.URLClassLoader(urls)
-        def bootstrapServiceRegistry = classloader.loadClass('org.hibernate.boot.registry.BootstrapServiceRegistryBuilder').newInstance().applyClassLoader(classloader).build();
-        def builder = classloader.loadClass("org.hibernate.boot.registry.StandardServiceRegistryBuilder").getConstructor(classloader.loadClass('org.hibernate.boot.registry.BootstrapServiceRegistry')).newInstance(bootstrapServiceRegistry);
-        builder.configure("hibernate.cfg.xml");
-        def serviceRegistry = builder.build();
-        def metadata = classloader.loadClass('org.hibernate.boot.MetadataSources').getConstructor(classloader.loadClass('org.hibernate.service.ServiceRegistry')).newInstance(serviceRegistry).buildMetadata();
-        def schemaUpdate = classloader.loadClass('org.hibernate.tool.hbm2ddl.SchemaUpdate').newInstance();
-        schemaUpdate.setFormat(true);
-        schemaUpdate.setHaltOnError(true);
-        schemaUpdate.setDelimiter(";");
-        def schemaOutputFile = new File("$rootDir/src/main/resources/database/schema-delta.sql");
-        if (schemaOutputFile.exists()) {
-            schemaOutputFile.delete();
-        }
-        println(schemaOutputFile)
-        schemaUpdate.setOutputFile(schemaOutputFile.toString());
-        schemaUpdate.execute(EnumSet.of(Enum.valueOf(classloader.loadClass('org.hibernate.tool.schema.TargetType'), 'SCRIPT')), metadata);
-        metadata.buildSessionFactory().close();
-    }
-}
-
 task recreateDb(dependsOn: [schemaExport, deleteDb, createDb, createTable, insertData]){
     group = "Hibernate"
     description = "Cancella, crea e popola il database del progetto"
@@ -194,6 +174,7 @@ task recreateDb(dependsOn: [schemaExport, deleteDb, createDb, createTable, inser
         println "Execute recreateDb..."
     }
 }
+
 insertData.mustRunAfter(createTable)
 createTable.mustRunAfter(createDb)
 createDb.mustRunAfter(deleteDb)

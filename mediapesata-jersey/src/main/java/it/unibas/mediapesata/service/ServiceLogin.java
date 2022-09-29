@@ -1,14 +1,15 @@
 package it.unibas.mediapesata.service;
 
+import javax.persistence.EntityNotFoundException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import it.unibas.mediapesata.modello.Utente;
 import it.unibas.mediapesata.modello.dto.UtenteDTO;
 import it.unibas.mediapesata.persistenza.DAOFactory;
 import it.unibas.mediapesata.persistenza.IDAOUtente;
-import it.unibas.mediapesata.persistenza.hibernate.DAOUtenteHibernate;
 import it.unibas.mediapesata.util.JWTUtil;
-import javax.persistence.EntityNotFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ServiceLogin {
 

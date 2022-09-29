@@ -5,13 +5,10 @@ import it.unibas.mediapesata.modello.Configurazione;
 import it.unibas.mediapesata.modello.dto.StudenteDTO;
 import it.unibas.mediapesata.persistenza.hibernate.DAOUtilHibernate;
 import it.unibas.mediapesata.service.ServiceStudenti;
-import junit.framework.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import junit.framework.TestCase;
 
 public class TestRisorsaStudenti extends TestCase {
 
-    private final static Logger logger = LoggerFactory.getLogger(TestRisorsaStudenti.class);
     private ServiceStudenti serviceStudenti = new ServiceStudenti();
 
     @Override
