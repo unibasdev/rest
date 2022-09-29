@@ -1,4 +1,4 @@
-package it.unibas.mediapesata;
+ package it.unibas.mediapesata;
 
 import it.unibas.mediapesata.modello.Esame;
 import it.unibas.mediapesata.modello.Studente;

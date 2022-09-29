@@ -11,10 +11,6 @@ import javax.persistence.criteria.Root;
 
 public class DAOUtenteHibernate extends DAOGenericoHibernate<Utente> implements IDAOUtente {
 
-    public DAOUtenteHibernate() {
-        super(Utente.class);
-    }
-
     @Override
     public Utente findByEmail(String email) throws DAOException {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();

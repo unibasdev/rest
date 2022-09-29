@@ -82,6 +82,9 @@ public class ServiceEsami {
         if (esame == null) {
             throw new EntityNotFoundException("Esame con id " + idEsame + " non trovato");
         }
+        Studente studente = esame.getStudente();
         daoEsame.makeTransient(esame);
+        studente.getListaEsami().remove(esame);
+        daoStudente.makePersistent(studente);
     }
 }

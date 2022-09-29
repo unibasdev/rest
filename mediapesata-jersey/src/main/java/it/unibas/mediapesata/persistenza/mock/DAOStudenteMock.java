@@ -6,56 +6,30 @@ import it.unibas.mediapesata.persistenza.IDAOStudente;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DAOStudenteMock implements IDAOStudente {
+public class DAOStudenteMock extends DAOGenericoMock<Studente> implements IDAOStudente {
 
     @Override
     public List<Studente> findByCognomeNomeAnnoIscrizione(String cognome, String nome, Integer annoIscrizione) throws DAOException {
-        List<Studente> studenti = new ArrayList<>();
-        RepositoryMock repositoryMock = RepositoryMock.getInstance();
-        for (Studente studente : repositoryMock.getStudenti()) {
+        List<Studente> tuttiGliStudenti = this.findAll();
+        List<Studente> studentiFiltrati = new ArrayList<>();
+        for (Studente studente : tuttiGliStudenti) {
             if ((cognome == null || studente.getCognome().equalsIgnoreCase(cognome))
                     && (nome == null || studente.getNome().equalsIgnoreCase(nome))
                     && (annoIscrizione == null || studente.getAnnoIscrizione() == annoIscrizione)) {
-                studenti.add(studente);
+                studentiFiltrati.add(studente);
             }
         }
-        return studenti;
+        return studentiFiltrati;
     }
 
     @Override
     public Studente findByMatricola(int matricola) throws DAOException {
-        RepositoryMock repositoryMock = RepositoryMock.getInstance();
-        for (Studente studente : repositoryMock.getStudenti()) {
+        for (Studente studente : this.findAll()) {
             if (studente.getMatricola() == matricola) {
                 return studente;
             }
         }
         return null;
-    }
-
-    @Override
-    public Studente findById(Long id) throws DAOException {
-        RepositoryMock repositoryMock = RepositoryMock.getInstance();
-        return repositoryMock.getStudente(id);
-    }
-
-    @Override
-    public List<Studente> findAll() throws DAOException {
-        RepositoryMock repositoryMock = RepositoryMock.getInstance();
-        return repositoryMock.getStudenti();
-    }
-
-    @Override
-    public Studente makePersistent(Studente studente) throws DAOException {
-        RepositoryMock repositoryMock = RepositoryMock.getInstance();
-        repositoryMock.addStudente(studente);
-        return studente;
-    }
-
-    @Override
-    public void makeTransient(Studente entity) throws DAOException {
-        RepositoryMock repositoryMock = RepositoryMock.getInstance();
-        repositoryMock.removeStudente(entity);
     }
 
 }

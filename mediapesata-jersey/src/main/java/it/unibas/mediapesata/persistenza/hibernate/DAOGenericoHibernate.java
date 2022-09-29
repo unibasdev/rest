@@ -2,6 +2,7 @@ package it.unibas.mediapesata.persistenza.hibernate;
 
 import it.unibas.mediapesata.persistenza.IDAOGenerico;
 import it.unibas.mediapesata.persistenza.DAOException;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,8 +22,10 @@ public class DAOGenericoHibernate<T> implements IDAOGenerico<T> {
     private Class<T> persistentClass;
 
     @SuppressWarnings("unchecked")
-    public DAOGenericoHibernate(Class<T> persistentClass) {
-        this.persistentClass = persistentClass;
+    public DAOGenericoHibernate() {
+        this.persistentClass = (Class<T>) ((ParameterizedType) getClass()
+                .getGenericSuperclass())
+                .getActualTypeArguments()[0];
     }
 
     protected Class<T> getPersistentClass() {

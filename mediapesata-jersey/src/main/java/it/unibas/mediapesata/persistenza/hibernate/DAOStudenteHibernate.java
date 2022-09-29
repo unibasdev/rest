@@ -12,10 +12,6 @@ import javax.persistence.criteria.Root;
 
 public class DAOStudenteHibernate extends DAOGenericoHibernate<Studente> implements IDAOStudente {
 
-    public DAOStudenteHibernate() {
-        super(Studente.class);
-    }
-
     @Override
     public Studente findByMatricola(int matricola) throws DAOException {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();

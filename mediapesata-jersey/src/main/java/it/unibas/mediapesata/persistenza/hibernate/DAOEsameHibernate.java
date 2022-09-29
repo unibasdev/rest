@@ -14,10 +14,6 @@ import javax.persistence.criteria.Root;
 
 public class DAOEsameHibernate extends DAOGenericoHibernate<Esame> implements IDAOEsame {
 
-    public DAOEsameHibernate() {
-        super(Esame.class);
-    }
-
     @Override
     public List<Esame> findByInsegnamentoVotoLodeCreditiDataRegistrazione(String insegnamento, Integer voto, Boolean lode, Integer crediti, LocalDate dataRegistrazione) throws DAOException {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
