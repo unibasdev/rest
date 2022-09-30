@@ -14,16 +14,16 @@ public class RepositoryGenericoMock {
     private long prossimoId = 0;
 
     @SuppressWarnings("unchecked")
-    public <T> T getBean(long id, Class<T> classe) {
+    public <T> T findById(long id, Class<T> classe) {
         return (T) beans.get(classe).get(id);
     }
 
     @SuppressWarnings("unchecked")
-    public <T> List<T> getBeans(Class<T> classe) {
+    public <T> List<T> findAll(Class<T> classe) {
         return new ArrayList<T>((Collection<? extends T>) beans.get(classe).values());
     }
 
-    public <T> void addBean(T bean) {
+    public <T> void saveOrUpdate(T bean) {
         try {
             Class classe = bean.getClass();
             Field field = classe.getDeclaredField("id");
@@ -44,7 +44,7 @@ public class RepositoryGenericoMock {
         }
     }
 
-    public <T> void removeBean(T bean) {
+    public <T> void delete(T bean) {
         try {
             Class classe = bean.getClass();
             Field field = classe.getDeclaredField("id");
