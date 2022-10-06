@@ -10,9 +10,9 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
-@Path("utente")
+@Path("utenti")
 @PermitAll
-public class RisorsaUtente {
+public class RisorsaUtenti {
 
     private ServiceLogin serviceLogin = new ServiceLogin();
 

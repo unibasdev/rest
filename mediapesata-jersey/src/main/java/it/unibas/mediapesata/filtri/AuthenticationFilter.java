@@ -36,7 +36,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-        if(requestContext.getUriInfo().getPath().startsWith("openapi.")){
+        if(requestContext.getUriInfo().getPath().startsWith("openapi.") || requestContext.getUriInfo().getPath().startsWith("application.wadl")){
             return;
         }
         if (requestContext.getMethod().equalsIgnoreCase("OPTIONS")) {
