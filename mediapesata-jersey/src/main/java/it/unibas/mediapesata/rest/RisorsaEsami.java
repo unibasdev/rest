@@ -3,6 +3,7 @@ package it.unibas.mediapesata.rest;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import it.unibas.mediapesata.modello.dto.EsameDTO;
 import it.unibas.mediapesata.service.ServiceEsami;
+import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -25,11 +26,12 @@ import java.util.List;
 @SecurityRequirement(name = "bearerAuth")
 public class RisorsaEsami {
 
-    private ServiceEsami serviceEsami = new ServiceEsami();
+    @Inject
+    private ServiceEsami serviceEsami;
 
     @GET
-//    @Operation(summary = "Filtra esami",tags = "Esami")
-//    @ApiResponse(responseCode = "200", description = "OK", useReturnTypeSchema = true)
+    //    @Operation(summary = "Filtra esami",tags = "Esami")
+    //    @ApiResponse(responseCode = "200", description = "OK", useReturnTypeSchema = true)
     public List<EsameDTO> getAllEsami(
             @QueryParam("insegnamento") String insegnamento,
             @Min(18) @Max(30) @QueryParam("voto") Integer voto,
@@ -42,8 +44,8 @@ public class RisorsaEsami {
 
     @GET
     @Path("/{idEsame}")
-//    @Operation(summary = "Ottieni i dettagli di un singolo esame",tags = "Esami")
-//    @ApiResponse(responseCode = "200", description = "OK", useReturnTypeSchema = true)
+    //    @Operation(summary = "Ottieni i dettagli di un singolo esame",tags = "Esami")
+    //    @ApiResponse(responseCode = "200", description = "OK", useReturnTypeSchema = true)
     public EsameDTO getEsame(
             @NotNull @PathParam("idEsame") long idEsame
     ) {
@@ -53,8 +55,8 @@ public class RisorsaEsami {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-//    @Operation(summary = "Crea un nuovo esame",tags = "Esami")
-//    @ApiResponse(responseCode = "201", description = "OK")
+    //    @Operation(summary = "Crea un nuovo esame",tags = "Esami")
+    //    @ApiResponse(responseCode = "201", description = "OK")
     public long creaEsame(@NotNull @Valid EsameDTO esame) {
         return serviceEsami.creaEsame(esame);
     }
@@ -62,8 +64,8 @@ public class RisorsaEsami {
     @PUT
     @Path("/{idEsame}")
     @Consumes(MediaType.APPLICATION_JSON)
-//    @Operation(summary = "Modifica l'esame",tags = "Esami")
-//    @ApiResponse(responseCode = "201", description = "OK")
+    //    @Operation(summary = "Modifica l'esame",tags = "Esami")
+    //    @ApiResponse(responseCode = "201", description = "OK")
     public void modificaEsame(
             @NotNull @PathParam("idEsame") long idEsame,
             @NotNull @Valid EsameDTO esame
@@ -73,8 +75,8 @@ public class RisorsaEsami {
 
     @DELETE
     @Path("/{idEsame}")
-//    @Operation(summary = "Elimina l'esame",tags = "Esami")
-//    @ApiResponse(responseCode = "201", description = "OK")
+    //    @Operation(summary = "Elimina l'esame",tags = "Esami")
+    //    @ApiResponse(responseCode = "201", description = "OK")
     public void eliminaEsame(
             @NotNull @PathParam("idEsame") long idEsame
     ) {

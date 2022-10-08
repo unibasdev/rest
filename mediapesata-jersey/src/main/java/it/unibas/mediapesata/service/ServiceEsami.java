@@ -7,6 +7,7 @@ import it.unibas.mediapesata.persistenza.DAOFactory;
 import it.unibas.mediapesata.persistenza.IDAOEsame;
 import it.unibas.mediapesata.persistenza.IDAOStudente;
 import it.unibas.mediapesata.util.Mapper;
+import jakarta.enterprise.context.ApplicationScoped;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ import javax.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@ApplicationScoped
 public class ServiceEsami {
 
     private final static Logger logger = LoggerFactory.getLogger(ServiceEsami.class);
@@ -42,7 +44,6 @@ public class ServiceEsami {
         logger.debug("Esame trovato: {}", esameDTO);
         return esameDTO;
     }
-//
 
     public long creaEsame(EsameDTO esameDTO) {
         if (esameDTO.getId() != null) {

@@ -5,6 +5,7 @@ import it.unibas.mediapesata.enums.ETipoMediaPesata;
 import it.unibas.mediapesata.modello.dto.EsameDTO;
 import it.unibas.mediapesata.modello.dto.StudenteDTO;
 import it.unibas.mediapesata.service.ServiceStudenti;
+import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.ws.rs.Consumes;
@@ -27,7 +28,11 @@ import java.util.List;
 @SecurityRequirement(name = "bearerAuth")
 public class RisorsaStudenti {
     
-    private ServiceStudenti serviceStudenti = new ServiceStudenti();
+    @Inject 
+    private ServiceStudenti serviceStudenti;
+    
+    @Context
+    private SecurityContext securityContext;
 
     @GET
 //    @Operation(summary = "Filtra studenti",tags = "Studenti")
@@ -77,7 +82,7 @@ public class RisorsaStudenti {
     @Produces(MediaType.TEXT_PLAIN)
 //    @Operation(summary = "Crea un nuovo studente",tags = "Studenti")
 //    @ApiResponse(responseCode = "201", description = "OK")
-    public long creaStudente(@NotNull @Valid StudenteDTO studente, @Context SecurityContext securityContext) {
+    public long creaStudente(@NotNull @Valid StudenteDTO studente) {
         return serviceStudenti.creaStudente(studente, securityContext.getUserPrincipal().getName());
     }
 

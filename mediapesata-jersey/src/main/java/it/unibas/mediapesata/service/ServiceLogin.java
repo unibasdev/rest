@@ -10,7 +10,9 @@ import it.unibas.mediapesata.modello.dto.UtenteDTO;
 import it.unibas.mediapesata.persistenza.DAOFactory;
 import it.unibas.mediapesata.persistenza.IDAOUtente;
 import it.unibas.mediapesata.util.JWTUtil;
+import jakarta.enterprise.context.ApplicationScoped;
 
+@ApplicationScoped
 public class ServiceLogin {
 
     private final static Logger logger = LoggerFactory.getLogger(ServiceLogin.class);

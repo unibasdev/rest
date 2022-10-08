@@ -8,12 +8,14 @@ import it.unibas.mediapesata.modello.dto.StudenteDTO;
 import it.unibas.mediapesata.persistenza.DAOFactory;
 import it.unibas.mediapesata.persistenza.IDAOStudente;
 import it.unibas.mediapesata.util.Mapper;
+import jakarta.enterprise.context.ApplicationScoped;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@ApplicationScoped
 public class ServiceStudenti {
 
     private final static Logger logger = LoggerFactory.getLogger(ServiceStudenti.class);

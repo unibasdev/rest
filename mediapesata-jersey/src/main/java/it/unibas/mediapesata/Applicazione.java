@@ -13,6 +13,5 @@ public class Applicazione extends Application {
     public Applicazione() {
         logger.info("Applicazione creata...");
     }
-    
-    
+
 }
