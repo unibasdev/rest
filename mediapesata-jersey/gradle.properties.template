@@ -13,4 +13,3 @@ dbusername=pguser
 dbpassword=pguser
 dbtmpDb=testdb
 dbDriver=org.postgresql.Driver
-schemaGeneratorClass=it.unibas.mediapesata.rest.persistenza.hibernate.GenerateSchema

@@ -6,22 +6,22 @@ ext {
     buildWebAppDir = "$buildDir/webapp"
 }
 
-task checkProperties() {
+task checkTomcatProperties() {
     def errori = "";
-    if(tomcatDir.toString().blank){
+    if(!project.hasProperty('tomcatDir') || tomcatDir.toString().blank){
         errori += "tomcatDir "
     }
     if(!errori.blank){
         println("################################################################")
         println("#                      ERRORE                                  #")
         println("################################################################")
-        println("Impostare le seguenti proprieta' nel file gradle.properties: \n\t"  + errori)
+        println("Impostare le seguenti proprieta' nel file gradle.properties. \nSe il file non e' presente crearlo a partire dal template: \n\t"  + errori)
         throw new GradleException('Missing properties: ' + errori)
     }
 }
 
 
-task startTomcat(dependsOn: [checkProperties]) {
+task startTomcat(dependsOn: [checkTomcatProperties]) {
     group = "Tomcat"
     description = "Avvia il server applicativo"
     doLast {
@@ -41,7 +41,7 @@ task startTomcat(dependsOn: [checkProperties]) {
     }
 }
 
-task stopTomcat(type:Exec, dependsOn: [checkProperties]) {
+task stopTomcat(type:Exec, dependsOn: [checkTomcatProperties]) {
     group = "Tomcat"
     description = "Arresta il server applicativo"
     workingDir "${tomcatDir}/bin"
@@ -119,14 +119,14 @@ task copyContext(type: Copy, dependsOn: [generateContext]) {
 }
 
 
-task deploy(type: Copy, dependsOn: [checkProperties, war]) {
+task deploy(type: Copy, dependsOn: [checkTomcatProperties, war]) {
     group = "Tomcat"
     description = "Genera e installa il war nella cartella webapp di Tomcat"
     from war.archiveFile
     into "${tomcatDir}/webapps"
 }
 
-task undeploy(dependsOn: [checkProperties]) {
+task undeploy(dependsOn: [checkTomcatProperties]) {
     group = "Tomcat"
     description = "Rimuove war dalla cartella webapp di Tomcat "
     doLast {
@@ -135,7 +135,7 @@ task undeploy(dependsOn: [checkProperties]) {
 }
 
 
-task lightDeploy(dependsOn: [checkProperties, prepareDir, compileJava, copyClasses, copyWebapp, copyResources, copyRuntimeLibs, copyContext]) {
+task lightDeploy(dependsOn: [checkTomcatProperties, prepareDir, compileJava, copyClasses, copyWebapp, copyResources, copyRuntimeLibs, copyContext]) {
     group = "Tomcat"
     description = "Installa l'applicazione aggiungendo il contesto applicativo in Tomcat"
     doLast {
@@ -143,7 +143,7 @@ task lightDeploy(dependsOn: [checkProperties, prepareDir, compileJava, copyClass
     }
 }
 
-task lightUndeploy(dependsOn: [checkProperties]) {
+task lightUndeploy(dependsOn: [checkTomcatProperties]) {
     group = "Tomcat"
     description = "Rimuove il contesto applicativo dell'applicazione da Tomcat "
     doLast {
@@ -151,7 +151,7 @@ task lightUndeploy(dependsOn: [checkProperties]) {
     }
 }
 
-task lightReload(dependsOn: [checkProperties, prepareDir, compileJava, copyClasses, copyWebapp, copyResources, copyRuntimeLibs]){
+task lightReload(dependsOn: [checkTomcatProperties, prepareDir, compileJava, copyClasses, copyWebapp, copyResources, copyRuntimeLibs]){
     group = "Tomcat"
     description = "Ricarica l'applicazione senza richiede un riavvio"
     doLast {

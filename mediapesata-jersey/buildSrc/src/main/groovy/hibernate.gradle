@@ -19,7 +19,27 @@ dependencies {
     runtimeOnly "com.sun.xml.bind:jaxb-ri:2.3.3"
 }
 
-task jdbcClassLoader(){
+task checkDBProperties() {
+    def errori = "";
+    if(!project.hasProperty('dbusername') || dbusername.toString().blank){
+        errori += "dbusername "
+    }
+    if(!project.hasProperty('dbpassword') || dbpassword.toString().blank){
+        errori += "dbpassword "
+    }
+    if(!project.hasProperty('dbDriver') || dbDriver.toString().blank){
+        errori += "dbDriver "
+    }
+    if(!errori.blank){
+        println("################################################################")
+        println("#                      ERRORE                                  #")
+        println("################################################################")
+        println("Impostare le seguenti proprieta' nel file gradle.properties. \nSe il file non e' presente crearlo a partire dal template: \n\t"  + errori)
+        throw new GradleException('Missing properties: ' + errori)
+    }
+}
+
+task jdbcClassLoader(dependsOn: [checkDBProperties]){
     doLast {
         println "Execute jdbcClassLoader..."
         configurations.jdbcdriver.files.each {
