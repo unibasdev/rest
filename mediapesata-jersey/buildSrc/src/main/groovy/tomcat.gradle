@@ -167,6 +167,14 @@ task lightReload(dependsOn: [checkTomcatProperties, prepareDir, compileJava, cop
     }
 }
 
+task open(dependsOn: [checkTomcatProperties]) {
+    group = "Tomcat"
+    description = "Apre il browser all'indirizzo radice dell'applicazione"
+    doLast {
+        java.awt.Desktop.desktop.browse (("http://${tomcatHost}:${tomcatPort}/" + project.name).toURI())
+    }
+}
+
 war {
     archiveFileName = project.name + '.war'
 }
