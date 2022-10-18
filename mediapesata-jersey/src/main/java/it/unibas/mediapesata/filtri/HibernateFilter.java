@@ -20,7 +20,7 @@ public class HibernateFilter implements ContainerRequestFilter, ContainerRespons
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-        if(!Configurazione.getInstance().getStrategiaDb().equals(EStrategiaPersistenza.DB_HIBERNATE)){
+        if (!Configurazione.getInstance().getStrategiaDb().equals(EStrategiaPersistenza.DB_HIBERNATE)) {
             return;
         }
         if (requestContext.getMethod().equalsIgnoreCase("OPTIONS")) {
@@ -32,7 +32,7 @@ public class HibernateFilter implements ContainerRequestFilter, ContainerRespons
 
     @Override
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
-        if(!Configurazione.getInstance().getStrategiaDb().equals(EStrategiaPersistenza.DB_HIBERNATE)){
+        if (!Configurazione.getInstance().getStrategiaDb().equals(EStrategiaPersistenza.DB_HIBERNATE)) {
             return;
         }
         if (requestContext.getMethod().equalsIgnoreCase("OPTIONS")) {

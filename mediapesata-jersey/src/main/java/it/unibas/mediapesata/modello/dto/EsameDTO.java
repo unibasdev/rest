@@ -14,7 +14,8 @@ public class EsameDTO {
     private Long studenteId;
     @NotNull
     private String insegnamento;
-    @Min(18) @Max(30)
+    @Min(18)
+    @Max(30)
     private int voto;
     private boolean lode;
     @Min(1)

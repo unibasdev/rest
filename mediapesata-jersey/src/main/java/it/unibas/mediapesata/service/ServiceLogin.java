@@ -14,7 +14,7 @@ import javax.persistence.EntityNotFoundException;
 @ApplicationScoped
 public class ServiceLogin {
 
-    private IDAOUtente daoUtente = DAOFactory.getInstance().getDAOUtente();
+    private final IDAOUtente daoUtente = DAOFactory.getInstance().getDAOUtente();
 
     public String login(UtenteDTO utenteDTO) {
         Utente utente = daoUtente.findByEmail(utenteDTO.getEmail());

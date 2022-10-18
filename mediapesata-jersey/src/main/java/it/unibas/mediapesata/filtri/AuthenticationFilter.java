@@ -28,15 +28,15 @@ import java.security.Principal;
 @Slf4j
 public class AuthenticationFilter implements ContainerRequestFilter {
 
-    @Context
-    private ResourceInfo resourceInfo;
     private static final String AUTHENTICATION_SCHEME = "Bearer";
     private static final ObjectMapper mapper = new ObjectMapper();
-    private static final IDAOUtente daoUtente =DAOFactory.getInstance().getDAOUtente();
+    private static final IDAOUtente daoUtente = DAOFactory.getInstance().getDAOUtente();
+    @Context
+    private ResourceInfo resourceInfo;
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-        if(requestContext.getUriInfo().getPath().startsWith("openapi.") || requestContext.getUriInfo().getPath().startsWith("application.wadl")){
+        if (requestContext.getUriInfo().getPath().startsWith("openapi.") || requestContext.getUriInfo().getPath().startsWith("application.wadl")) {
             return;
         }
         if (requestContext.getMethod().equalsIgnoreCase("OPTIONS")) {
@@ -86,9 +86,9 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
     class AppSecurityContext implements SecurityContext {
 
-        private String username;
-        private boolean secure;
-        private String authenticationScheme;
+        private final String username;
+        private final boolean secure;
+        private final String authenticationScheme;
 
         public AppSecurityContext(String username, boolean secure, String authenticationScheme) {
             this.username = username;

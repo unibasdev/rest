@@ -8,7 +8,7 @@ import java.util.List;
 
 public class DAOGenericoMock<T> implements IDAOGenerico<T> {
 
-    private Class<T> persistentClass;
+    private final Class<T> persistentClass;
 
     @SuppressWarnings("unchecked")
     public DAOGenericoMock() {

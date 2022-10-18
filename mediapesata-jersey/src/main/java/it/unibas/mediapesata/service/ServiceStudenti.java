@@ -69,7 +69,7 @@ public class ServiceStudenti {
     }
 
     public long creaStudente(StudenteDTO studenteDTO, String utente) {
-        if(studenteDTO.getId() != null){
+        if (studenteDTO.getId() != null) {
             throw new IllegalArgumentException("Lo studente nella richiesta deve avere id null");
         }
         Studente studenteEsistente = daoStudente.findByMatricola(studenteDTO.getMatricola());
@@ -83,7 +83,7 @@ public class ServiceStudenti {
     }
 
     public void modificaStudente(long idStudente, StudenteDTO studenteDTO) {
-        if(studenteDTO.getId() != null && !studenteDTO.getId().equals(idStudente)){
+        if (studenteDTO.getId() != null && !studenteDTO.getId().equals(idStudente)) {
             throw new IllegalArgumentException("Lo studente nella richiesta deve avere id " + idStudente);
         }
         Studente studente = daoStudente.findById(idStudente);

@@ -20,7 +20,7 @@ public class GenericExceptionFilter implements ExceptionMapper<Throwable> {
     public Response toResponse(Throwable ex) {
         try {
             if (Configurazione.getInstance().getStrategiaDb().equals(EStrategiaPersistenza.DB_HIBERNATE) &&
-                   DAOUtilHibernate.getSessionFactory().getCurrentSession().isOpen()) {
+                    DAOUtilHibernate.getSessionFactory().getCurrentSession().isOpen()) {
                 log.debug("Effettuo il rollback della transazione");
                 DAOUtilHibernate.rollback();
             }

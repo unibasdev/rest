@@ -12,17 +12,11 @@ import java.util.Map;
 
 public class RepositoryMockEsteso {
 
-    private static RepositoryMockEsteso singleton = new RepositoryMockEsteso();
-
-    public static RepositoryMockEsteso getInstance() {
-        return singleton;
-    }
-
-    private Map<Long, Utente> utenti = new HashMap<>();
-    private Map<Long, Esame> esami = new HashMap<>();
-    private Map<Long, Studente> studenti = new HashMap<>();
+    private static final RepositoryMockEsteso singleton = new RepositoryMockEsteso();
+    private final Map<Long, Utente> utenti = new HashMap<>();
+    private final Map<Long, Esame> esami = new HashMap<>();
+    private final Map<Long, Studente> studenti = new HashMap<>();
     private long prossimoId = 0;
-
     private RepositoryMockEsteso() {
         Utente u1 = new Utente("admin@unibas.it", "admin");
         addUtente(u1);
@@ -39,6 +33,10 @@ public class RepositoryMockEsteso {
         addEsame(e1);
         addEsame(e2);
         addEsame(e3);
+    }
+
+    public static RepositoryMockEsteso getInstance() {
+        return singleton;
     }
 
     public Utente getUtente(long id) {

@@ -17,7 +17,7 @@ import jakarta.ws.rs.core.MediaType;
 @PermitAll
 public class RisorsaUtenti {
 
-    @Inject 
+    @Inject
     private ServiceLogin serviceLogin;
 
     @POST

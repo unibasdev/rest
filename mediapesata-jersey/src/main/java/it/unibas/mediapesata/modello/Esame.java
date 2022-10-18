@@ -50,7 +50,6 @@ public class Esame {
         sb.append(" registrato il ").append(getTestoDataRegistrazione());
         return sb.toString();
     }
-    
-    
+
 
 }

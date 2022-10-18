@@ -21,10 +21,10 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 @SecurityRequirement(name = "bearerAuth")
 public class RisorsaStudenti {
-    
-    @Inject 
+
+    @Inject
     private ServiceStudenti serviceStudenti;
-    
+
     @Context
     private SecurityContext securityContext;
 

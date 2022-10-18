@@ -12,7 +12,7 @@ public class DAOEsameMockEsteso implements IDAOEsame {
 
     @Override
     public List<Esame> findByInsegnamentoVotoLodeCreditiDataRegistrazione(String insegnamento,
-            Integer voto, Boolean lode, Integer crediti, LocalDate dataRegistrazione) throws DAOException {
+                                                                          Integer voto, Boolean lode, Integer crediti, LocalDate dataRegistrazione) throws DAOException {
         List<Esame> esami = new ArrayList<>();
         RepositoryMockEsteso repositoryMock = RepositoryMockEsteso.getInstance();
         for (Esame esame : repositoryMock.getEsami()) {

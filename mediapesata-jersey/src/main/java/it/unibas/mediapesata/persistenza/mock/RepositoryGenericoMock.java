@@ -7,7 +7,7 @@ import java.util.*;
 
 public class RepositoryGenericoMock {
 
-    private Map<Class, Map<Long, Object>> beans = new HashMap<>();
+    private final Map<Class, Map<Long, Object>> beans = new HashMap<>();
     private long prossimoId = 0;
 
     @SuppressWarnings("unchecked")

@@ -35,10 +35,10 @@ public class JWTUtil {
 
     public static String verificaToken(String token) {
         try {
-            Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY); 
+            Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
             JWTVerifier verifier = JWT.require(algorithm)
                     .withIssuer("unibas.it")
-                    .build(); 
+                    .build();
             DecodedJWT jwt = verifier.verify(token);
             return jwt.getSubject();
         } catch (JWTVerificationException ex) {

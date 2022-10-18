@@ -8,11 +8,7 @@ import java.time.LocalDate;
 
 public class RepositoryMock extends RepositoryGenericoMock {
 
-    private static RepositoryMock singleton = new RepositoryMock();
-
-    public static RepositoryMock getInstance() {
-        return singleton;
-    }
+    private static final RepositoryMock singleton = new RepositoryMock();
 
     private RepositoryMock() {
         Utente u1 = new Utente("admin@unibas.it", "admin");
@@ -30,6 +26,10 @@ public class RepositoryMock extends RepositoryGenericoMock {
         saveOrUpdate(e1);
         saveOrUpdate(e2);
         saveOrUpdate(e3);
+    }
+
+    public static RepositoryMock getInstance() {
+        return singleton;
     }
 
 }

@@ -14,13 +14,12 @@ import java.util.List;
 @Slf4j
 public class CorsFilter implements ContainerResponseFilter {
 
-    private static List<String> ALLOWED_ORIGINS = Arrays.asList(new String[]{
-        "http://localhost:4200",
-        "null",});
+    private static final List<String> ALLOWED_ORIGINS = Arrays.asList("http://localhost:4200",
+            "null");
 
     @Override
     public void filter(ContainerRequestContext requestContext,
-            ContainerResponseContext responseContext) throws IOException {
+                       ContainerResponseContext responseContext) throws IOException {
         log.trace("Eseguo CORS filter");
         String origin = requestContext.getHeaderString("Origin");
         log.debug("Ricevuta una richiesta dall'origin {}", origin);

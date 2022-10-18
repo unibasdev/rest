@@ -52,7 +52,7 @@ public class Studente {
         return getMedia30mi() / 30 * 110;
     }
 
-    public void addEsame(Esame esame){
+    public void addEsame(Esame esame) {
         this.listaEsami.add(esame);
     }
 

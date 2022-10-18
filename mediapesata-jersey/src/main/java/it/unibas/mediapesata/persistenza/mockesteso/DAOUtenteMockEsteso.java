@@ -12,7 +12,7 @@ public class DAOUtenteMockEsteso implements IDAOUtente {
     public Utente findByEmail(String email) throws DAOException {
         RepositoryMockEsteso repositoryMock = RepositoryMockEsteso.getInstance();
         for (Utente utente : repositoryMock.getUtenti()) {
-            if(utente.getEmail().equals(email)){
+            if (utente.getEmail().equals(email)) {
                 return utente;
             }
         }

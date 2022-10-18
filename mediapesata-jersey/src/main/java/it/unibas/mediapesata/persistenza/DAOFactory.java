@@ -12,15 +12,15 @@ import static it.unibas.mediapesata.enums.EStrategiaPersistenza.DB_HIBERNATE;
 
 public class DAOFactory {
 
-    private static DAOFactory singleton = new DAOFactory();
+    private static final DAOFactory singleton = new DAOFactory();
 
     public static DAOFactory getInstance() {
         return singleton;
     }
 
-    private IDAOUtente daoUtente;
-    private IDAOStudente daoStudente;
-    private IDAOEsame daoEsame;
+    private final IDAOUtente daoUtente;
+    private final IDAOStudente daoStudente;
+    private final IDAOEsame daoEsame;
 
     private DAOFactory() {
         if (Configurazione.getInstance().getStrategiaDb().equals(DB_HIBERNATE)) {

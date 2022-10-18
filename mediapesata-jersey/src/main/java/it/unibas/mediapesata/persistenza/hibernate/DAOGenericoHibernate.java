@@ -15,17 +15,13 @@ import java.util.Map;
 @Slf4j
 public class DAOGenericoHibernate<T> implements IDAOGenerico<T> {
 
-    private Class<T> persistentClass;
+    private final Class<T> persistentClass;
 
     @SuppressWarnings("unchecked")
     public DAOGenericoHibernate() {
         this.persistentClass = (Class<T>) ((ParameterizedType) getClass()
                 .getGenericSuperclass())
                 .getActualTypeArguments()[0];
-    }
-
-    protected Class<T> getPersistentClass() {
-        return persistentClass;
     }
 
     protected static Session getSession() throws DAOException {
@@ -35,6 +31,10 @@ public class DAOGenericoHibernate<T> implements IDAOGenerico<T> {
             log.error("Error while opening session", ex);
             throw new DAOException(ex);
         }
+    }
+
+    protected Class<T> getPersistentClass() {
+        return persistentClass;
     }
 
     @Override
@@ -118,7 +118,7 @@ public class DAOGenericoHibernate<T> implements IDAOGenerico<T> {
     @SuppressWarnings("unchecked")
     public T saveOrMerge(T obj, Long id) throws DAOException {
         try {
-            T persistentObject = (T) getSession().get(persistentClass, id);
+            T persistentObject = getSession().get(persistentClass, id);
             if (persistentObject != null) {
                 if (log.isDebugEnabled()) log.debug("Get ha trovato l'oggetto con id " + id);
                 return persistentObject;

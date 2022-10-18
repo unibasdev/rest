@@ -12,7 +12,7 @@ public class DAOEsameMock extends DAOGenericoMock<Esame> implements IDAOEsame {
 
     @Override
     public List<Esame> findByInsegnamentoVotoLodeCreditiDataRegistrazione(String insegnamento,
-            Integer voto, Boolean lode, Integer crediti, LocalDate dataRegistrazione) throws DAOException {
+                                                                          Integer voto, Boolean lode, Integer crediti, LocalDate dataRegistrazione) throws DAOException {
         List<Esame> tuttiGliEsami = this.findAll();
         List<Esame> esamiFiltrati = new ArrayList<>();
         for (Esame esame : tuttiGliEsami) {
