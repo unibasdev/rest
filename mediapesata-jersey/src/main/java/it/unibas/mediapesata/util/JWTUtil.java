@@ -7,13 +7,13 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import java.util.Calendar;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+import java.util.Calendar;
+
+@Slf4j
 public class JWTUtil {
 
-    private final static Logger logger = LoggerFactory.getLogger(JWTUtil.class);
     private static final String SECRET_KEY = "---chiave-segreta---";
 
     public static String generaToken(String email) {
@@ -28,7 +28,7 @@ public class JWTUtil {
             builder.withExpiresAt(c.getTime());
             return builder.sign(algorithm);
         } catch (JWTCreationException ex) {
-            logger.warn("Token non valido {}", ex.getMessage(), ex);
+            log.warn("Token non valido {}", ex.getMessage(), ex);
             throw new IllegalArgumentException("Token non valido " + ex);
         }
     }
@@ -42,7 +42,7 @@ public class JWTUtil {
             DecodedJWT jwt = verifier.verify(token);
             return jwt.getSubject();
         } catch (JWTVerificationException ex) {
-            logger.warn("Token non valido {}", ex.getMessage(), ex);
+            log.warn("Token non valido {}", ex.getMessage(), ex);
             throw new IllegalArgumentException("Token non valido " + ex);
         }
     }

@@ -1,9 +1,10 @@
 package it.unibas.mediapesata.util;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Mapper {
 

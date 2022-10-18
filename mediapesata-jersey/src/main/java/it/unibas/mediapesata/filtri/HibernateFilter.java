@@ -1,7 +1,7 @@
 package it.unibas.mediapesata.filtri;
 
-import it.unibas.mediapesata.modello.Configurazione;
 import it.unibas.mediapesata.enums.EStrategiaPersistenza;
+import it.unibas.mediapesata.modello.Configurazione;
 import it.unibas.mediapesata.persistenza.hibernate.DAOUtilHibernate;
 import jakarta.annotation.Priority;
 import jakarta.ws.rs.container.ContainerRequestContext;
@@ -9,15 +9,14 @@ import jakarta.ws.rs.container.ContainerRequestFilter;
 import jakarta.ws.rs.container.ContainerResponseContext;
 import jakarta.ws.rs.container.ContainerResponseFilter;
 import jakarta.ws.rs.ext.Provider;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Provider
 @Priority(100)
+@Slf4j
 public class HibernateFilter implements ContainerRequestFilter, ContainerResponseFilter {
-
-    private final static Logger logger = LoggerFactory.getLogger(HibernateFilter.class);
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
@@ -27,7 +26,7 @@ public class HibernateFilter implements ContainerRequestFilter, ContainerRespons
         if (requestContext.getMethod().equalsIgnoreCase("OPTIONS")) {
             return;
         }
-        logger.debug("Avvio la transazione");
+        log.debug("Avvio la transazione");
         DAOUtilHibernate.beginTransaction();
     }
 
@@ -40,7 +39,7 @@ public class HibernateFilter implements ContainerRequestFilter, ContainerRespons
             return;
         }
         if (DAOUtilHibernate.getSessionFactory().getCurrentSession().getTransaction().isActive()) {
-            logger.debug("Effettuo il commit della transazione");
+            log.debug("Effettuo il commit della transazione");
             DAOUtilHibernate.commit();
         }
     }

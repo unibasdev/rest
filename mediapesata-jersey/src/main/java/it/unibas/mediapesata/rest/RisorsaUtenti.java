@@ -3,6 +3,7 @@ package it.unibas.mediapesata.rest;
 import it.unibas.mediapesata.modello.dto.UtenteDTO;
 import it.unibas.mediapesata.service.ServiceLogin;
 import jakarta.annotation.security.PermitAll;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
@@ -12,6 +13,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
 @Path("/utenti")
+@RequestScoped
 @PermitAll
 public class RisorsaUtenti {
 

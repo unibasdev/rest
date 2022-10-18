@@ -1,7 +1,7 @@
 package it.unibas.mediapesata.service;
 
-import it.unibas.mediapesata.modello.Esame;
 import it.unibas.mediapesata.enums.ETipoMediaPesata;
+import it.unibas.mediapesata.modello.Esame;
 import it.unibas.mediapesata.modello.Studente;
 import it.unibas.mediapesata.modello.dto.EsameDTO;
 import it.unibas.mediapesata.modello.dto.StudenteDTO;
@@ -9,22 +9,22 @@ import it.unibas.mediapesata.persistenza.DAOFactory;
 import it.unibas.mediapesata.persistenza.IDAOStudente;
 import it.unibas.mediapesata.util.Mapper;
 import jakarta.enterprise.context.ApplicationScoped;
+import lombok.extern.slf4j.Slf4j;
+
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.EntityNotFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 @ApplicationScoped
 public class ServiceStudenti {
 
-    private final static Logger logger = LoggerFactory.getLogger(ServiceStudenti.class);
     private final static IDAOStudente daoStudente = DAOFactory.getInstance().getDAOStudente();
 
     public List<StudenteDTO> getAllStudenti(String cognome, String nome, Integer annoIscrizione) {
         List<Studente> studenti = daoStudente.findByCognomeNomeAnnoIscrizione(cognome, nome, annoIscrizione);
         List<StudenteDTO> studentiDTO = Mapper.map(studenti, StudenteDTO.class);
-        logger.debug("Studenti trovati: {}", studentiDTO.size());
+        log.debug("Studenti trovati: {}", studentiDTO.size());
         return studentiDTO;
     }
 
@@ -34,7 +34,7 @@ public class ServiceStudenti {
             throw new EntityNotFoundException("Studente con id " + idStudente + " non trovato");
         }
         StudenteDTO studenteDTO = Mapper.map(studente, StudenteDTO.class);
-        logger.debug("Studente trovato: {}", studenteDTO);
+        log.debug("Studente trovato: {}", studenteDTO);
         return studenteDTO;
     }
 
@@ -43,7 +43,7 @@ public class ServiceStudenti {
         if (studente == null) {
             throw new EntityNotFoundException("Studente con id " + idStudente + " non trovato");
         }
-        logger.debug("Esami: {}", studente.getListaEsami());
+        log.debug("Esami: {}", studente.getListaEsami());
         List<EsameDTO> esamiDTO = new ArrayList<>();
         for (Esame esame : studente.getListaEsami()) {
             EsameDTO esameDTO = Mapper.map(esame, EsameDTO.class);
@@ -54,7 +54,7 @@ public class ServiceStudenti {
     }
 
     public double getMediaPesata(long idStudente, ETipoMediaPesata tipoMediaPesata) {
-        logger.debug("Calcolo la medi pesata dello studente con id: {}", idStudente);
+        log.debug("Calcolo la medi pesata dello studente con id: {}", idStudente);
         Studente studente = daoStudente.findById(idStudente);
         if (studente == null) {
             throw new EntityNotFoundException("Studente con id " + idStudente + " non trovato");
@@ -78,7 +78,7 @@ public class ServiceStudenti {
         }
         Studente studente = Mapper.map(studenteDTO, Studente.class);
         daoStudente.makePersistent(studente);
-        logger.debug("L'utente {} ha creato lo studente {} {}", utente, studente.getId(), studente);
+        log.debug("L'utente {} ha creato lo studente {} {}", utente, studente.getId(), studente);
         return studente.getId();
     }
 
@@ -90,9 +90,9 @@ public class ServiceStudenti {
         if (studente == null) {
             throw new EntityNotFoundException("Studente con id " + idStudente + " non trovato");
         }
-        logger.debug("Studente prima della modifica: {}", studente);
+        log.debug("Studente prima della modifica: {}", studente);
         Mapper.map(studenteDTO, studente);
-        logger.debug("Studente dopo la modifica: {}", studente);
+        log.debug("Studente dopo la modifica: {}", studente);
     }
 
     public void eliminaStudente(long idStudente) {

@@ -8,17 +8,17 @@ import it.unibas.mediapesata.persistenza.IDAOEsame;
 import it.unibas.mediapesata.persistenza.IDAOStudente;
 import it.unibas.mediapesata.util.Mapper;
 import jakarta.enterprise.context.ApplicationScoped;
+import lombok.extern.slf4j.Slf4j;
+
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.EntityNotFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 @ApplicationScoped
 public class ServiceEsami {
 
-    private final static Logger logger = LoggerFactory.getLogger(ServiceEsami.class);
     private final static IDAOStudente daoStudente = DAOFactory.getInstance().getDAOStudente();
     private final static IDAOEsame daoEsame = DAOFactory.getInstance().getDAOEsame();
 
@@ -30,7 +30,7 @@ public class ServiceEsami {
             esameDTO.setStudenteId(esame.getStudente().getId());
             esamiDTO.add(esameDTO);
         }
-        logger.debug("Esami trovati: {}", esamiDTO.size());
+        log.debug("Esami trovati: {}", esamiDTO.size());
         return esamiDTO;
     }
 
@@ -41,7 +41,7 @@ public class ServiceEsami {
         }
         EsameDTO esameDTO = Mapper.map(esame, EsameDTO.class);
         esameDTO.setStudenteId(esame.getStudente().getId());
-        logger.debug("Esame trovato: {}", esameDTO);
+        log.debug("Esame trovato: {}", esameDTO);
         return esameDTO;
     }
 
@@ -60,7 +60,7 @@ public class ServiceEsami {
         nuovoEsame.setStudente(studente);
         studente.getListaEsami().add(nuovoEsame);
         daoEsame.makePersistent(nuovoEsame);
-        logger.debug("Salvato l'esame {} {}", nuovoEsame.getId(), nuovoEsame);
+        log.debug("Salvato l'esame {} {}", nuovoEsame.getId(), nuovoEsame);
         return nuovoEsame.getId();
     }
 

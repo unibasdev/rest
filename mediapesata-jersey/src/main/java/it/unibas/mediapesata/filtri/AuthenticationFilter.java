@@ -17,17 +17,17 @@ import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
 import jakarta.ws.rs.ext.Provider;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.security.Principal;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Provider
 @Priority(Priorities.AUTHENTICATION)
+@Slf4j
 public class AuthenticationFilter implements ContainerRequestFilter {
 
-    private final static Logger logger = LoggerFactory.getLogger(AuthenticationFilter.class);
     @Context
     private ResourceInfo resourceInfo;
     private static final String AUTHENTICATION_SCHEME = "Bearer";
@@ -45,7 +45,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         Class<?> resourceClass = resourceInfo.getResourceClass();
         Method method = resourceInfo.getResourceMethod();
         if (resourceClass.isAnnotationPresent(PermitAll.class) || method.isAnnotationPresent(PermitAll.class)) {
-            logger.debug("Accesso ad una risorsa pubblica");
+            log.debug("Accesso ad una risorsa pubblica");
             return;
         }
         String intestazioneAutorizzazione = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
@@ -56,7 +56,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         String token = intestazioneAutorizzazione.substring(AUTHENTICATION_SCHEME.length()).trim();
         try {
             String emailUtente = JWTUtil.verificaToken(token);
-            logger.debug("Utente verificato: {}", emailUtente);
+            log.debug("Utente verificato: {}", emailUtente);
             Utente utente = daoUtente.findByEmail(emailUtente);
             if (utente == null) {
                 interrompiRichiesta("Utente " + emailUtente + " non trovato", requestContext);
@@ -65,7 +65,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
             SecurityContext originalSecurityContext = requestContext.getSecurityContext();
             requestContext.setSecurityContext(new AppSecurityContext(emailUtente, originalSecurityContext.isSecure(), originalSecurityContext.getAuthenticationScheme()));
         } catch (Exception e) {
-            logger.error("Errore durante la validazione del token {}", e.getMessage(), e);
+            log.error("Errore durante la validazione del token {}", e.getMessage(), e);
             interrompiRichiesta("Token di autorizzazione non valido", requestContext);
         }
     }

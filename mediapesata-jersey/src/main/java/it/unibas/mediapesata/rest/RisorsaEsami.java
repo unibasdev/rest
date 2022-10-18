@@ -3,25 +3,20 @@ package it.unibas.mediapesata.rest;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import it.unibas.mediapesata.modello.dto.EsameDTO;
 import it.unibas.mediapesata.service.ServiceEsami;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.DELETE;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.PUT;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+
 import java.time.LocalDate;
 import java.util.List;
 
 @Path("/esami")
+@RequestScoped
 @Produces(MediaType.APPLICATION_JSON)
 @SecurityRequirement(name = "bearerAuth")
 public class RisorsaEsami {

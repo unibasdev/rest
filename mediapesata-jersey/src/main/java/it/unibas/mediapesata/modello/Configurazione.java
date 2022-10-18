@@ -10,8 +10,8 @@ public class Configurazione {
         return singleton;
     }
 
-//    private EStrategiaPersistenza strategiaDb = EStrategiaPersistenza.DB_HIBERNATE;
-    private EStrategiaPersistenza strategiaDb = EStrategiaPersistenza.DB_MOCK;
+    private EStrategiaPersistenza strategiaDb = EStrategiaPersistenza.DB_HIBERNATE;
+//    private EStrategiaPersistenza strategiaDb = EStrategiaPersistenza.DB_MOCK;
     
     private Configurazione() {
     }

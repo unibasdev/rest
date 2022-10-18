@@ -1,9 +1,10 @@
  package it.unibas.mediapesata;
 
-import it.unibas.mediapesata.modello.Esame;
-import it.unibas.mediapesata.modello.Studente;
-import static java.time.LocalDate.now;
-import junit.framework.*;
+ import it.unibas.mediapesata.modello.Esame;
+ import it.unibas.mediapesata.modello.Studente;
+ import junit.framework.TestCase;
+
+ import static java.time.LocalDate.now;
 
 public class TestStudente extends TestCase {
 

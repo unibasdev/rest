@@ -2,16 +2,14 @@ package it.unibas.mediapesata;
 
 import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.core.Application;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 @ApplicationPath("/api/v1")
+@Slf4j
 public class Applicazione extends Application {
 
-    private final static Logger logger = LoggerFactory.getLogger(Applicazione.class);
-
     public Applicazione() {
-        logger.info("Applicazione creata...");
+        log.info("Applicazione creata...");
     }
 
 }

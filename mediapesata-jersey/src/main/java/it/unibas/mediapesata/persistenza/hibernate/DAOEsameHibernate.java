@@ -1,16 +1,16 @@
 package it.unibas.mediapesata.persistenza.hibernate;
 
-import it.unibas.mediapesata.persistenza.IDAOEsame;
 import it.unibas.mediapesata.modello.Esame;
 import it.unibas.mediapesata.persistenza.DAOException;
-import static it.unibas.mediapesata.persistenza.hibernate.DAOGenericoHibernate.getSession;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import it.unibas.mediapesata.persistenza.IDAOEsame;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DAOEsameHibernate extends DAOGenericoHibernate<Esame> implements IDAOEsame {
 

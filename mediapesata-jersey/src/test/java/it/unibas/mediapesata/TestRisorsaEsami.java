@@ -1,7 +1,5 @@
 package it.unibas.mediapesata;
 
-import java.time.LocalDate;
-
 import it.unibas.mediapesata.enums.EStrategiaPersistenza;
 import it.unibas.mediapesata.modello.Configurazione;
 import it.unibas.mediapesata.modello.dto.EsameDTO;
@@ -10,6 +8,8 @@ import it.unibas.mediapesata.persistenza.hibernate.DAOUtilHibernate;
 import it.unibas.mediapesata.service.ServiceEsami;
 import it.unibas.mediapesata.service.ServiceStudenti;
 import junit.framework.TestCase;
+
+import java.time.LocalDate;
 
 public class TestRisorsaEsami extends TestCase {
 

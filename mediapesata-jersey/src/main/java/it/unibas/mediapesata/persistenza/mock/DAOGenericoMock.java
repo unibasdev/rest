@@ -1,7 +1,8 @@
 package it.unibas.mediapesata.persistenza.mock;
 
-import it.unibas.mediapesata.persistenza.IDAOGenerico;
 import it.unibas.mediapesata.persistenza.DAOException;
+import it.unibas.mediapesata.persistenza.IDAOGenerico;
+
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 

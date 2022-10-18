@@ -1,13 +1,14 @@
 package it.unibas.mediapesata.persistenza;
 
 import it.unibas.mediapesata.modello.Configurazione;
-import static it.unibas.mediapesata.enums.EStrategiaPersistenza.DB_HIBERNATE;
 import it.unibas.mediapesata.persistenza.hibernate.DAOEsameHibernate;
 import it.unibas.mediapesata.persistenza.hibernate.DAOStudenteHibernate;
 import it.unibas.mediapesata.persistenza.hibernate.DAOUtenteHibernate;
 import it.unibas.mediapesata.persistenza.mock.DAOEsameMock;
 import it.unibas.mediapesata.persistenza.mock.DAOStudenteMock;
 import it.unibas.mediapesata.persistenza.mock.DAOUtenteMock;
+
+import static it.unibas.mediapesata.enums.EStrategiaPersistenza.DB_HIBERNATE;
 
 public class DAOFactory {
 

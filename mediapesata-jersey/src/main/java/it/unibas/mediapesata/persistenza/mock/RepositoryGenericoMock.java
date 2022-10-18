@@ -1,12 +1,9 @@
 package it.unibas.mediapesata.persistenza.mock;
 
 import it.unibas.mediapesata.persistenza.DAOException;
+
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class RepositoryGenericoMock {
 

@@ -1,24 +1,20 @@
 package it.unibas.mediapesata.persistenza.hibernate;
 
-import it.unibas.mediapesata.persistenza.IDAOGenerico;
 import it.unibas.mediapesata.persistenza.DAOException;
+import it.unibas.mediapesata.persistenza.IDAOGenerico;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+
+import javax.persistence.criteria.*;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class DAOGenericoHibernate<T> implements IDAOGenerico<T> {
 
-    private final static Logger logger = LoggerFactory.getLogger(DAOGenericoHibernate.class);
     private Class<T> persistentClass;
 
     @SuppressWarnings("unchecked")
@@ -36,7 +32,7 @@ public class DAOGenericoHibernate<T> implements IDAOGenerico<T> {
         try {
             return DAOUtilHibernate.getCurrentSession();
         } catch (HibernateException ex) {
-            logger.error("Error while opening session", ex);
+            log.error("Error while opening session", ex);
             throw new DAOException(ex);
         }
     }
@@ -47,7 +43,7 @@ public class DAOGenericoHibernate<T> implements IDAOGenerico<T> {
         try {
             getSession().saveOrUpdate(entity);
         } catch (HibernateException ex) {
-            logger.error("Error while making persistent object {}", entity, ex);
+            log.error("Error while making persistent object {}", entity, ex);
             throw new DAOException(ex);
         }
         return entity;
@@ -58,7 +54,7 @@ public class DAOGenericoHibernate<T> implements IDAOGenerico<T> {
         try {
             getSession().delete(entity);
         } catch (HibernateException ex) {
-            logger.error("Error while making transient object {}", entity, ex);
+            log.error("Error while making transient object {}", entity, ex);
             throw new DAOException(ex);
         }
     }
@@ -124,14 +120,14 @@ public class DAOGenericoHibernate<T> implements IDAOGenerico<T> {
         try {
             T persistentObject = (T) getSession().get(persistentClass, id);
             if (persistentObject != null) {
-                if (logger.isDebugEnabled()) logger.debug("Get ha trovato l'oggetto con id " + id);
+                if (log.isDebugEnabled()) log.debug("Get ha trovato l'oggetto con id " + id);
                 return persistentObject;
             } else {
                 makePersistent(obj);
                 return obj;
             }
         } catch (Exception ex) {
-            logger.error("Error while saving object {}", obj, ex);
+            log.error("Error while saving object {}", obj, ex);
             throw new DAOException(ex);
         }
     }
@@ -142,7 +138,7 @@ public class DAOGenericoHibernate<T> implements IDAOGenerico<T> {
             T persistentObject = (T) getSession().merge(obj);
             return persistentObject;
         } catch (Exception ex) {
-            logger.error("Error while merging object {}", obj, ex);
+            log.error("Error while merging object {}", obj, ex);
             throw new DAOException(ex);
         }
     }

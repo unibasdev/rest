@@ -3,11 +3,12 @@ package it.unibas.mediapesata.persistenza.hibernate;
 import it.unibas.mediapesata.modello.Utente;
 import it.unibas.mediapesata.persistenza.DAOException;
 import it.unibas.mediapesata.persistenza.IDAOUtente;
-import java.util.List;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.List;
 
 public class DAOUtenteHibernate extends DAOGenericoHibernate<Utente> implements IDAOUtente {
 

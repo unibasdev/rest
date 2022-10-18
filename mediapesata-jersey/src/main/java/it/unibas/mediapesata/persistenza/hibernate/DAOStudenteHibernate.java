@@ -1,14 +1,15 @@
 package it.unibas.mediapesata.persistenza.hibernate;
 
-import it.unibas.mediapesata.persistenza.IDAOStudente;
 import it.unibas.mediapesata.modello.Studente;
 import it.unibas.mediapesata.persistenza.DAOException;
-import java.util.ArrayList;
-import java.util.List;
+import it.unibas.mediapesata.persistenza.IDAOStudente;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DAOStudenteHibernate extends DAOGenericoHibernate<Studente> implements IDAOStudente {
 
