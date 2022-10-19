@@ -28,9 +28,6 @@ public class DAOFactory {
             daoStudente = new DAOStudenteHibernate();
             daoEsame = new DAOEsameHibernate();
         } else {
-//            daoUtente = new DAOUtenteMockEsteso();
-//            daoStudente = new DAOStudenteMockEsteso();
-//            daoEsame = new DAOEsameMockEsteso();
             daoUtente = new DAOUtenteMock();
             daoStudente = new DAOStudenteMock();
             daoEsame = new DAOEsameMock();

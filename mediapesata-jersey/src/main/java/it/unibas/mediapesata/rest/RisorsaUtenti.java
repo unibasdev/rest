@@ -1,7 +1,7 @@
 package it.unibas.mediapesata.rest;
 
 import it.unibas.mediapesata.modello.dto.UtenteDTO;
-import it.unibas.mediapesata.service.ServiceLogin;
+import it.unibas.mediapesata.service.ServiceUtenti;
 import jakarta.annotation.security.PermitAll;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
@@ -18,7 +18,7 @@ import jakarta.ws.rs.core.MediaType;
 public class RisorsaUtenti {
 
     @Inject
-    private ServiceLogin serviceLogin;
+    private ServiceUtenti serviceUtenti;
 
     @POST
     @Path("/login")
@@ -29,7 +29,7 @@ public class RisorsaUtenti {
     public String login(
             @Valid UtenteDTO utente
     ) {
-        String token = serviceLogin.login(utente);
+        String token = serviceUtenti.login(utente);
         return token;
     }
 

@@ -12,7 +12,7 @@ import javax.persistence.EntityNotFoundException;
 
 @Slf4j
 @ApplicationScoped
-public class ServiceLogin {
+public class ServiceUtenti {
 
     private final IDAOUtente daoUtente = DAOFactory.getInstance().getDAOUtente();
 
