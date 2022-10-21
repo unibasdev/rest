@@ -1,4 +1,4 @@
-package it.unibas.mediapesata.filtri;
+package it.unibas.mediapesata.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;

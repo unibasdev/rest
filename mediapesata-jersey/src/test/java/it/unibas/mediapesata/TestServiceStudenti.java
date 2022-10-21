@@ -7,7 +7,7 @@ import it.unibas.mediapesata.persistenza.hibernate.DAOUtilHibernate;
 import it.unibas.mediapesata.service.ServiceStudenti;
 import junit.framework.TestCase;
 
-public class TestRisorsaStudenti extends TestCase {
+public class TestServiceStudenti extends TestCase {
 
     private ServiceStudenti serviceStudenti = new ServiceStudenti();
 

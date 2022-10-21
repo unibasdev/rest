@@ -11,7 +11,7 @@ import junit.framework.TestCase;
 
 import java.time.LocalDate;
 
-public class TestRisorsaEsami extends TestCase {
+public class TestServiceEsami extends TestCase {
 
     private ServiceStudenti serviceStudenti = new ServiceStudenti();
     private ServiceEsami serviceEsami = new ServiceEsami();

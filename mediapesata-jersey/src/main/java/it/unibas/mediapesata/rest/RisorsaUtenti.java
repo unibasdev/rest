@@ -24,8 +24,6 @@ public class RisorsaUtenti {
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    //    @Operation(summary = "Effettua il login sull'applicazione",tags = "Login")
-    //    @ApiResponse(responseCode = "200", description = "OK", useReturnTypeSchema = true)
     public String login(
             @Valid UtenteDTO utente
     ) {

@@ -29,8 +29,6 @@ public class RisorsaStudenti {
     private SecurityContext securityContext;
 
     @GET
-//    @Operation(summary = "Filtra studenti",tags = "Studenti")
-//    @ApiResponse(responseCode = "200", description = "OK", useReturnTypeSchema = true)
     public List<StudenteDTO> getAllStudenti(
             @QueryParam("cognome") String cognome,
             @QueryParam("nome") String nome,
@@ -41,8 +39,6 @@ public class RisorsaStudenti {
 
     @GET
     @Path("/{idStudente}")
-//    @Operation(summary = "Ottieni i dettagli di un singolo studente",tags = "Studenti")
-//    @ApiResponse(responseCode = "200", description = "OK", useReturnTypeSchema = true)
     public StudenteDTO getStudente(
             @NotNull @PathParam("idStudente") long idStudente
     ) {
@@ -51,8 +47,6 @@ public class RisorsaStudenti {
 
     @GET
     @Path("/{idStudente}/esami")
-//    @Operation(summary = "Ottieni la lista degli esami di un singolo studente",tags = "Studenti")
-//    @ApiResponse(responseCode = "200", description = "OK", useReturnTypeSchema = true)
     public List<EsameDTO> getEsami(
             @NotNull @PathParam("idStudente") long idStudente
     ) {
@@ -62,8 +56,6 @@ public class RisorsaStudenti {
     @GET
     @Path("/{idStudente}/mediapesata")
     @Produces(MediaType.TEXT_PLAIN)
-//    @Operation(summary = "Calcola la media pesata degli esami di uno studente",tags = "Studenti")
-//    @ApiResponse(responseCode = "200", description = "OK", useReturnTypeSchema = true)
     public double getMediaPesata(
             @NotNull @PathParam("idStudente") long idStudente,
             @DefaultValue("MEDIA_110") @QueryParam("tipoMediaPesata") ETipoMediaPesata tipoMediaPesata
@@ -74,8 +66,6 @@ public class RisorsaStudenti {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-//    @Operation(summary = "Crea un nuovo studente",tags = "Studenti")
-//    @ApiResponse(responseCode = "201", description = "OK")
     public long creaStudente(@NotNull @Valid StudenteDTO studente) {
         return serviceStudenti.creaStudente(studente, securityContext.getUserPrincipal().getName());
     }
@@ -83,8 +73,6 @@ public class RisorsaStudenti {
     @PUT
     @Path("/{idStudente}")
     @Consumes(MediaType.APPLICATION_JSON)
-//    @Operation(summary = "Modifica lo studente", tags = "Studenti")
-//    @ApiResponse(responseCode = "201", description = "OK")
     public void modificaStudente(
             @NotNull @PathParam("idStudente") long idStudente,
             @NotNull @Valid StudenteDTO studente
@@ -94,8 +82,6 @@ public class RisorsaStudenti {
 
     @DELETE
     @Path("/{idStudente}")
-//    @Operation(summary = "Elimina lo studente", tags = "Studenti")
-//    @ApiResponse(responseCode = "201", description = "OK")
     public void eliminaStudente(
             @NotNull @PathParam("idStudente") long idStudente
     ) {

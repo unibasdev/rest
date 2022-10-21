@@ -8,7 +8,7 @@ openAPI:
           Scienze e Tecnologie Informatiche dell''Universita'' degli Studi della Basilicata'
       termsOfService: http://swagger.io/terms/
     servers:
-      - url: http://localhost:8080/mediapesata-jersey #cambiare  con il nome dell'applicazione
+      - url: BACKEND_BASE_URL
         description: Server Locale su Tomcat
     components:
         securitySchemes:
