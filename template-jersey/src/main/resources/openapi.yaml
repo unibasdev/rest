@@ -1,0 +1,18 @@
+prettyPrint: true
+cacheTTL: 0
+openAPI:
+    info:
+      version: '1.0'
+      title: ProgettoPrest Jersey
+      description: 'Applicazione sviluppata nel Corso di Laurea di 
+          Scienze e Tecnologie Informatiche dell''Universita'' degli Studi della Basilicata'
+      termsOfService: http://swagger.io/terms/
+    servers:
+      - url: BACKEND_BASE_URL
+        description: Server Locale su Tomcat
+    components:
+        securitySchemes:
+          bearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT

@@ -1,0 +1,193 @@
+plugins {
+    id 'java'
+}
+
+ext {
+    buildWebAppDir = "$buildDir/webapp"
+}
+
+task checkTomcatProperties() {
+    doLast() {
+        def errori = "";
+        if (!project.hasProperty('tomcatDir') || tomcatDir.toString().blank) {
+            errori += "tomcatDir "
+        }
+        if (!errori.blank) {
+            println("################################################################")
+            println("#                      ERRORE                                  #")
+            println("################################################################")
+            println("Impostare le seguenti proprieta' nel file gradle.properties. \nSe il file non e' presente crearlo a partire dal template: \n\t" + errori)
+            throw new GradleException('Missing properties: ' + errori)
+        }
+    }
+}
+
+
+task startTomcat(dependsOn: [checkTomcatProperties]) {
+    group = "Tomcat"
+    description = "Avvia il server applicativo"
+    doLast {
+        def workingDir = "${tomcatDir}/bin"
+        if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('mac')) {
+            def command = "cd $workingDir && ./catalina.sh run && exit"
+            ['/bin/bash', '-c', /osascript -e 'tell application "Terminal" to do script "$command"'/].execute()
+        } else if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+            def command = "cd $workingDir & catalina.bat run"
+            ext.process = new ProcessBuilder()
+                    .directory(projectDir)
+                    .command('cmd', '/c', 'start', 'cmd.exe', '@cmd', '/k', "$command")
+                    .start()
+        } else {
+            throw new Exception('Sistema operativo non supportato...')
+        }
+    }
+}
+
+task stopTomcat(type: Exec, dependsOn: [checkTomcatProperties]) {
+    group = "Tomcat"
+    description = "Arresta il server applicativo"
+    doLast {
+        workingDir "${tomcatDir}/bin"
+        if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+            commandLine 'cmd', '/c', 'catalina.bat', 'stop'
+        } else {
+            commandLine './catalina.sh', 'stop'
+        }
+        standardOutput = new ByteArrayOutputStream()
+        ext.output = {
+            return standardOutput.toString()
+        }
+    }
+}
+
+task prepareDir() {
+    doLast() {
+        new File("$buildWebAppDir").mkdirs()
+        new File("$buildWebAppDir/WEB-INF/").mkdirs()
+        new File("$buildWebAppDir/WEB-INF/classes").mkdirs()
+        new File("$buildWebAppDir/META-INF/").mkdirs()
+    }
+}
+
+task generateContext(dependsOn: [prepareDir]) {
+    doLast {
+        new File("$buildWebAppDir/META-INF/" + project.name + ".xml").text = """<Context docBase="$buildWebAppDir" \n\
+            antiResourceLocking="false" reloadable="true">\n\
+    <Manager className="org.apache.catalina.session.PersistentManager" distributable="true" saveOnRestart="false">\n\
+        <Store className="org.apache.catalina.session.FileStore"/>          \n\
+    </Manager>\n\
+</Context>
+"""
+    }
+}
+
+task copyWebapp() {
+    doLast() {
+        if (webAppDir.exists()) {
+            ant.copy(todir: buildWebAppDir) {
+                fileset(dir: webAppDir)
+            }
+        }
+    }
+}
+
+task copyClasses(dependsOn: [compileJava]) {
+    doLast() {
+        ant.copy(todir: "$buildWebAppDir/WEB-INF/classes/") {
+            fileset(dir: sourceSets.main.output.classesDirs[0])
+        }
+    }
+}
+
+task copyResources() {
+    doLast() {
+        ant.copy(todir: "$buildWebAppDir/WEB-INF/classes/") {
+            fileset(dir: sourceSets.main.resources.srcDirs[0])
+        }
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.incremental = true
+}
+
+task copyRuntimeLibs() {
+    doLast() {
+        configurations.runtimeClasspath.files.each {
+            ant.copy(file: it, todir: "$buildWebAppDir/WEB-INF/lib")
+        }
+    }
+}
+
+task copyContext(dependsOn: [generateContext, compileJava]) {
+    doLast(){
+        ant.copy(todir: "${tomcatDir}/conf/Catalina/localhost") {
+            fileset(file: "$buildWebAppDir/META-INF/" + project.name + '.xml')
+        }
+    }
+}
+
+
+task deploy(dependsOn: [checkTomcatProperties, war]) {
+    group = "Tomcat"
+    description = "Genera e installa il war nella cartella webapp di Tomcat"
+    doLast(){
+        ant.copy(todir: "${tomcatDir}/webapps") {
+            fileset(file: "${war.archiveFile.get()}")
+        }
+    }
+}
+
+task undeploy(dependsOn: [checkTomcatProperties]) {
+    group = "Tomcat"
+    description = "Rimuove war dalla cartella webapp di Tomcat "
+    doLast {
+        new File("${tomcatDir}/webapps/" + war.archiveFileName.get()).delete()
+    }
+}
+
+
+task lightDeploy(dependsOn: [checkTomcatProperties, prepareDir, compileJava, copyClasses, copyWebapp, copyResources, copyRuntimeLibs, copyContext]) {
+    group = "Tomcat"
+    description = "Installa l'applicazione aggiungendo il contesto applicativo in Tomcat"
+    doLast {
+        println "Applicazione installata..."
+    }
+}
+
+task lightUndeploy(dependsOn: [checkTomcatProperties]) {
+    group = "Tomcat"
+    description = "Rimuove il contesto applicativo dell'applicazione da Tomcat "
+    doLast {
+        new File("${tomcatDir}/conf/Catalina/localhost/" + project.name + '.xml').delete()
+    }
+}
+
+task lightReload(dependsOn: [checkTomcatProperties, prepareDir, compileJava, copyClasses, copyWebapp, copyResources, copyRuntimeLibs]) {
+    group = "Tomcat"
+    description = "Ricarica l'applicazione senza richiede un riavvio"
+    doLast {
+        def authString = "${tomcatAdmin}" + ":" + "${tomcatPassword}"
+        def authStringEnc = authString.bytes.encodeBase64().toString()
+        URL url = new URL("http://${tomcatHost}:${tomcatPort}/manager/text/reload?path=/" + project.name)
+        URLConnection urlConnection = url.openConnection()
+        urlConnection.setRequestProperty("Authorization", "Basic " + authStringEnc)
+        def risposta = urlConnection.inputStream.getText("UTF-8")
+        println risposta
+        //java.awt.Desktop.desktop.browse (("http://${tomcatHost}:${tomcatPort}/" + project.name).toURI())
+        println "Applicazione ricaricata"
+    }
+}
+
+task open(dependsOn: [checkTomcatProperties]) {
+    group = "Tomcat"
+    description = "Apre il browser all'indirizzo radice dell'applicazione"
+    doLast {
+        java.awt.Desktop.desktop.browse(("http://${tomcatHost}:${tomcatPort}/" + project.name).toURI())
+    }
+}
+
+war {
+    archiveFileName = project.name + '.war'
+}
+

@@ -1,0 +1,15 @@
+## TOMCAT ##
+tomcatDir=
+tomcatHost=localhost
+tomcatPort=8080
+tomcatAdmin=admin
+tomcatPassword=admin
+
+## DATABASE ##
+dbhost=localhost
+dbport=5432
+dbname=progettorest
+dbusername=pguser
+dbpassword=pguser
+dbtmpDb=testdb
+dbDriver=org.postgresql.Driver
