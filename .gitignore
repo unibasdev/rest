@@ -1,2 +1,3 @@
-mediapesata-jersey/bin
-mediapesata-jersey/.vscode
+*/bin
+*/.vscode
+*/.idea

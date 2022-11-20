@@ -3,7 +3,7 @@ cacheTTL: 0
 openAPI:
     info:
       version: '1.0'
-      title: MediaPesata RESTEasy
+      title: MediaPesata Jersey
       description: 'Applicazione sviluppata nel Corso di Laurea di 
           Scienze e Tecnologie Informatiche dell''Universita'' degli Studi della Basilicata'
       termsOfService: http://swagger.io/terms/

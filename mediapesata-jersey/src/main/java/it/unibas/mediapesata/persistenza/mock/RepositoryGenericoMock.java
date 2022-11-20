@@ -4,11 +4,10 @@ import it.unibas.mediapesata.persistenza.DAOException;
 
 import java.lang.reflect.Field;
 import java.util.*;
-
 public class RepositoryGenericoMock {
 
     private final Map<Class, Map<Long, Object>> beans = new HashMap<>();
-    private long prossimoId = 0;
+    private long prossimoId = 1;
 
     @SuppressWarnings("unchecked")
     public <T> T findById(long id, Class<T> classe) {
@@ -17,7 +16,7 @@ public class RepositoryGenericoMock {
 
     @SuppressWarnings("unchecked")
     public <T> List<T> findAll(Class<T> classe) {
-        return new ArrayList<T>((Collection<? extends T>) beans.get(classe).values());
+        return new ArrayList<>((Collection<? extends T>) beans.get(classe).values());
     }
 
     public <T> void saveOrUpdate(T bean) {
@@ -26,7 +25,7 @@ public class RepositoryGenericoMock {
             Field field = classe.getDeclaredField("id");
             field.setAccessible(true);
             Long id = (Long) field.get(bean);
-            if (id == null) {
+            if (id == null || id == 0) {
                 id = getProssimoId();
                 field.set(bean, id);
             }

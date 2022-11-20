@@ -27,8 +27,7 @@ public class RisorsaUtenti {
     public String login(
             @Valid UtenteDTO utente
     ) {
-        String token = serviceUtenti.login(utente);
-        return token;
+        return serviceUtenti.login(utente);
     }
 
 }
