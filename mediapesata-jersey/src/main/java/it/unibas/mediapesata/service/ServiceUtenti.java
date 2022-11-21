@@ -19,7 +19,7 @@ public class ServiceUtenti {
     public String login(UtenteDTO utenteDTO) {
         Utente utente = daoUtente.findByEmail(utenteDTO.getEmail());
         if (utente == null) {
-            throw new EntityNotFoundException("Utente con email " + utenteDTO.getEmail() + " non trovato");
+            throw new IllegalArgumentException("Utente con email " + utenteDTO.getEmail() + " non trovato");
         }
         if (!utenteDTO.getPassword().equals(utente.getPassword())) {
             throw new IllegalArgumentException("Password non valida per l'utente " + utenteDTO.getEmail());

@@ -37,7 +37,7 @@ public class ServiceEsami {
     public EsameDTO getEsame(long idEsame) {
         Esame esame = daoEsame.findById(idEsame);
         if (esame == null) {
-            throw new EntityNotFoundException("Esame con id " + idEsame + " non trovato");
+            throw new IllegalArgumentException("Esame con id " + idEsame + " non trovato");
         }
         EsameDTO esameDTO = Mapper.map(esame, EsameDTO.class);
         esameDTO.setStudenteId(esame.getStudente().getId());
@@ -73,7 +73,7 @@ public class ServiceEsami {
         }
         Esame esame = daoEsame.findById(idEsame);
         if (esame == null) {
-            throw new EntityNotFoundException("Esame con id " + idEsame + " non trovato");
+            throw new IllegalArgumentException("Esame con id " + idEsame + " non trovato");
         }
         Mapper.map(esameDTO, esame);
     }
@@ -81,7 +81,7 @@ public class ServiceEsami {
     public void eliminaEsame(long idEsame) {
         Esame esame = daoEsame.findById(idEsame);
         if (esame == null) {
-            throw new EntityNotFoundException("Esame con id " + idEsame + " non trovato");
+            throw new IllegalArgumentException("Esame con id " + idEsame + " non trovato");
         }
         Studente studente = esame.getStudente();
         daoEsame.makeTransient(esame);

@@ -30,9 +30,18 @@ public class GenericExceptionFilter implements ExceptionMapper<Throwable> {
         log.error("Errore durante la gestione della richiesta {}", ex.getMessage(), ex);
         ObjectNode json = mapper.createObjectNode();
         json.put("error", ex.getMessage());
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+        return Response.status(getStatus(ex))
                 .entity(json.toPrettyString())
                 .build();
+    }
+
+    private Response.Status getStatus(Throwable ex) {
+        if (ex instanceof jakarta.validation.ValidationException
+                || ex instanceof jakarta.ws.rs.BadRequestException
+                || ex instanceof IllegalArgumentException) {
+            return Response.Status.BAD_REQUEST;
+        }
+        return Response.Status.INTERNAL_SERVER_ERROR;
     }
 
 }

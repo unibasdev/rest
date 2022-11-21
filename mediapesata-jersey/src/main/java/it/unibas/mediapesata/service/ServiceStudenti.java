@@ -31,7 +31,7 @@ public class ServiceStudenti {
     public StudenteDTO getStudente(long idStudente) {
         Studente studente = daoStudente.findById(idStudente);
         if (studente == null) {
-            throw new EntityNotFoundException("Studente con id " + idStudente + " non trovato");
+            throw new IllegalArgumentException("Studente con id " + idStudente + " non trovato");
         }
         StudenteDTO studenteDTO = Mapper.map(studente, StudenteDTO.class);
         log.debug("Studente trovato: {}", studenteDTO);
@@ -41,7 +41,7 @@ public class ServiceStudenti {
     public List<EsameDTO> getEsami(long idStudente) {
         Studente studente = daoStudente.findById(idStudente);
         if (studente == null) {
-            throw new EntityNotFoundException("Studente con id " + idStudente + " non trovato");
+            throw new IllegalArgumentException("Studente con id " + idStudente + " non trovato");
         }
         log.debug("Esami: {}", studente.getListaEsami());
         List<EsameDTO> esamiDTO = new ArrayList<>();
@@ -57,7 +57,7 @@ public class ServiceStudenti {
         log.debug("Calcolo la medi pesata dello studente con id: {}", idStudente);
         Studente studente = daoStudente.findById(idStudente);
         if (studente == null) {
-            throw new EntityNotFoundException("Studente con id " + idStudente + " non trovato");
+            throw new IllegalArgumentException("Studente con id " + idStudente + " non trovato");
         }
         double mediaPesata;
         if (tipoMediaPesata.equals(ETipoMediaPesata.MEDIA_110)) {
