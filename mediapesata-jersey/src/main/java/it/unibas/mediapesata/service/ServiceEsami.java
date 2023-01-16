@@ -68,9 +68,6 @@ public class ServiceEsami {
         if (esameDTO.getId() != null && !esameDTO.getId().equals(idEsame)) {
             throw new IllegalArgumentException("L'esame nella richiesta deve avere id " + idEsame);
         }
-        if (esameDTO.getStudenteId() != null) {
-            throw new IllegalArgumentException("L'esame nella richiesta deve avere studenteId nullo");
-        }
         Esame esame = daoEsame.findById(idEsame);
         if (esame == null) {
             throw new IllegalArgumentException("Esame con id " + idEsame + " non trovato");
