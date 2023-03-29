@@ -5,6 +5,7 @@ import it.unibas.mediapesata.modello.dto.UtenteDTO;
 import it.unibas.mediapesata.persistenza.DAOFactory;
 import it.unibas.mediapesata.persistenza.IDAOUtente;
 import it.unibas.mediapesata.util.JWTUtil;
+import it.unibas.mediapesata.util.Mapper;
 import jakarta.enterprise.context.ApplicationScoped;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,6 +28,14 @@ public class ServiceUtenti {
         String token = JWTUtil.generaToken(utenteDTO.getEmail());
         log.debug("All'utente {} e' stato generato il token {} ", utenteDTO.getEmail(), token);
         return token;
+    }
+
+    public UtenteDTO me(String email) {
+        Utente utente = daoUtente.findByEmail(email);
+        if (utente == null) {
+            throw new EntityNotFoundException("Utente con email " + email + " non trovato");
+        }
+        return Mapper.map(utente, UtenteDTO.class);
     }
 
 }
