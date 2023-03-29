@@ -161,6 +161,7 @@ task recreateDb(dependsOn: [schemaExport, deleteDb, createDb, createTable, inser
 
 insertData.mustRunAfter(createTable)
 createTable.mustRunAfter(createDb)
+createTable.mustRunAfter(schemaExport)
 createDb.mustRunAfter(deleteDb)
 recreateDb.mustRunAfter(schemaExport)
 schemaExport.mustRunAfter(createDb)
