@@ -36,7 +36,6 @@ public class Esame {
         this.studente = studente;
     }
 
-    @Transient
     public String getTestoDataRegistrazione() {
         return dataRegistrazione.format(ofLocalizedDate(FormatStyle.FULL));
     }
