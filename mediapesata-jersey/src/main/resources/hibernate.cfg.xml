@@ -8,7 +8,7 @@
         <property name="hibernate.jdbc.use_streams_for_binary">true</property>
         <property name="current_session_context_class">thread</property>
         <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
-        <property name="hibernate.connection.url">jdbc:postgresql:mediapesataresteasy</property>
+        <property name="hibernate.connection.url">jdbc:postgresql:mediapesatajersey</property>
         <property name="hibernate.connection.username">pguser</property>
         <property name="hibernate.connection.password">pguser</property>
 

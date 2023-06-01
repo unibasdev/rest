@@ -8,7 +8,7 @@ tomcatPassword=admin
 ## DATABASE ##
 dbhost=localhost
 dbport=5432
-dbname=mediapesataresteasy
+dbname=mediapesatajersey
 dbusername=pguser
 dbpassword=pguser
 dbtmpDb=testdb
