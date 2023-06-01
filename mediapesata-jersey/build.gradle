@@ -11,18 +11,18 @@ repositories {
 
 dependencies {
     //-------------- Jersey -----------------
-    implementation "org.glassfish.jersey.containers:jersey-container-servlet:3.0.8"
-    implementation "org.glassfish.jersey.containers:jersey-container-servlet-core:3.0.8"
+    implementation "org.glassfish.jersey.containers:jersey-container-servlet:3.1.2"
+    implementation "org.glassfish.jersey.containers:jersey-container-servlet-core:3.1.2"
     implementation "jakarta.inject:jakarta.inject-api:2.0.1"
-    implementation "org.glassfish.jersey.core:jersey-server:3.0.8"
-    implementation 'org.glassfish.jersey.ext.cdi:jersey-cdi1x:3.0.8'
-    implementation 'org.glassfish.jersey.ext.cdi:jersey-cdi1x-servlet:3.0.8'
+    implementation "org.glassfish.jersey.core:jersey-server:3.1.2"
+    implementation 'org.glassfish.jersey.ext.cdi:jersey-cdi1x:3.1.2'
+    implementation 'org.glassfish.jersey.ext.cdi:jersey-cdi1x-servlet:3.1.2'
     implementation 'org.jboss.weld.servlet:weld-servlet-core:4.0.3.Final' //CDI 3.0 - Weld 5.0.0 (CDI 4) richiede JDK >=11
-    implementation 'org.glassfish.jersey.ext:jersey-bean-validation:3.0.8'
-    implementation 'org.glassfish.jersey.media:jersey-media-json-jackson:3.0.8'
+    implementation 'org.glassfish.jersey.ext:jersey-bean-validation:3.1.2'
+    implementation 'org.glassfish.jersey.media:jersey-media-json-jackson:3.1.2'
     implementation 'org.glassfish.jaxb:jaxb-runtime:3.0.2' //4.0.0 richiede JDK >=11
     implementation 'jakarta.ws.rs:jakarta.ws.rs-api:3.0.0'
-    implementation 'org.glassfish.jersey.inject:jersey-hk2:3.0.8'
+    implementation 'org.glassfish.jersey.inject:jersey-hk2:3.1.2'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.4'
     //--------------  Mapper  -----------------
     implementation 'org.modelmapper:modelmapper:3.1.0'
