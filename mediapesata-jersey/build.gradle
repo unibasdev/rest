@@ -2,7 +2,7 @@ plugins {
     id "war"
     id "tomcat"
     id "hibernate"
-    id "io.freefair.lombok" version "6.5.1"
+    id "io.freefair.lombok" version "8.6"
 }
 
 repositories {
@@ -38,11 +38,6 @@ dependencies {
     runtimeOnly 'org.fusesource.jansi:jansi:1.17'
     //--------------  Test  -----------------
     testImplementation 'junit:junit:4.13'
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 compileJava {
