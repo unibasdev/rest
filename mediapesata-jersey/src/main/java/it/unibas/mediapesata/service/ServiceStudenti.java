@@ -90,6 +90,10 @@ public class ServiceStudenti {
         if (studente == null) {
             throw new EntityNotFoundException("Studente con id " + idStudente + " non trovato");
         }
+        Studente studenteMatricola = daoStudente.findByMatricola(studenteDTO.getMatricola());
+        if(studenteMatricola != null && studente.getId() != studenteMatricola.getId()){
+            throw new IllegalArgumentException("Esiste gia' uno studente con la matricola " + studenteDTO.getMatricola());
+        }
         log.debug("Studente prima della modifica: {}", studente);
         Mapper.map(studenteDTO, studente);
         log.debug("Studente dopo la modifica: {}", studente);

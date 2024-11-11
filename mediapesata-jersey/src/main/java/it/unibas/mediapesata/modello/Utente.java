@@ -18,10 +18,14 @@ public class Utente {
     @Column(unique = true)
     private String email;
     private String password;
+    private String nome;
+    private String cognome;
 
-    public Utente(String email, String password) {
+    public Utente(String email, String password, String nome, String cognome) {
         this.email = email;
         this.password = password;
+        this.nome = nome;
+        this.cognome = cognome;
     }
 
 }

@@ -11,7 +11,7 @@ public class RepositoryMock extends RepositoryGenericoMock {
     private static final RepositoryMock singleton = new RepositoryMock();
 
     private RepositoryMock() {
-        Utente u1 = new Utente("admin@unibas.it", "admin");
+        Utente u1 = new Utente("admin@unibas.it", "admin", "Pinco", "Palla");
         saveOrUpdate(u1);
         Studente s1 = new Studente("Rossi", "Mario", 1234, 2022);
         Studente s2 = new Studente("Verdi", "Giuseppe", 4321, 2022);

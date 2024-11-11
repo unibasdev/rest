@@ -9,6 +9,7 @@ import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
@@ -32,7 +33,7 @@ public class RisorsaStudenti {
     public List<StudenteDTO> getAllStudenti(
             @QueryParam("cognome") String cognome,
             @QueryParam("nome") String nome,
-            @QueryParam("annoIscrizione") Integer annoIscrizione
+            @QueryParam("annoIscrizione") @Positive Integer annoIscrizione
     ) {
         return serviceStudenti.getAllStudenti(cognome, nome, annoIscrizione);
     }

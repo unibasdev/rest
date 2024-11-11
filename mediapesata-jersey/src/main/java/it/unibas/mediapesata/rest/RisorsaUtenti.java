@@ -1,6 +1,7 @@
 package it.unibas.mediapesata.rest;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import it.unibas.mediapesata.modello.dto.CredenzialiDTO;
 import it.unibas.mediapesata.modello.dto.UtenteDTO;
 import it.unibas.mediapesata.service.ServiceUtenti;
 import jakarta.annotation.security.PermitAll;
@@ -28,9 +29,9 @@ public class RisorsaUtenti {
     @Produces(MediaType.TEXT_PLAIN)
     @PermitAll
     public String login(
-            @Valid UtenteDTO utente
+            @Valid CredenzialiDTO credenziali
     ) {
-        return serviceUtenti.login(utente);
+        return serviceUtenti.login(credenziali);
     }
 
     @GET
